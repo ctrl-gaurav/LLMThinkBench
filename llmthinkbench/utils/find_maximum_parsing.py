@@ -1,4 +1,5 @@
 import re
+import math
 
 def parse_find_maximum_answer(clean_response):
     """
@@ -132,7 +133,11 @@ def clean_and_convert_to_number(text):
         if number_match:
             number_str = number_match.group(1)
             # Convert to int or float as appropriate
-            return int(float(number_str)) if '.' not in number_str else float(number_str)
+            float_val = float(number_str)
+            if math.isinf(float_val) or '.' in number_str:
+                return float_val
+            else:
+                return int(float_val)
     except ValueError:
         pass
     
