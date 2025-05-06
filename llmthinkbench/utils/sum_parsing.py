@@ -1,4 +1,5 @@
 import re
+import math
 
 def extract_from_last_line(text):
     """
@@ -85,12 +86,16 @@ def clean_and_convert_to_number(text):
     number_pattern = r'([+-]?(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?)'
     number_match = re.search(number_pattern, text)
     
-    if number_match:
-        number_str = number_match.group(1)
-        number_str = number_str.replace(',', '')
-        return int(float(number_str)) if '.' not in number_str else float(number_str)
-    
+    try: 
+        if number_match:
+            number_str = number_match.group(1)
+            number_str = number_str.replace(',', '')
+            return int(float(number_str)) if '.' not in number_str else float(number_str)
+    except ValueError:
+        pass
     return text
+        
+        
 
 def extract_from_boxed_formats(text):
     """
