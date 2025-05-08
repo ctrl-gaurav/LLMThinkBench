@@ -1,0 +1,24 @@
+{
+  "even_count_8": {
+    "accuracy": {
+      "mean": 0.6367,
+      "std": 0.033
+    },
+    "instruction_followed": {
+      "mean": 0.5867,
+      "std": 0.066
+    },
+    "response_length": {
+      "mean": 400.81,
+      "std": 56.7871
+    },
+    "word_count": {
+      "mean": 80.69,
+      "std": 11.8462
+    },
+    "output_tokens": {
+      "mean": 155.84,
+      "std": 20.5268
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "find_minimum_8": {
+    "accuracy": {
+      "mean": 0.04,
+      "std": 0.0082
+    },
+    "instruction_followed": {
+      "mean": 0.0,
+      "std": 0.0
+    },
+    "response_length": {
+      "mean": 163.81,
+      "std": 16.5961
+    },
+    "word_count": {
+      "mean": 30.64,
+      "std": 3.2544
+    },
+    "output_tokens": {
+      "mean": 51.0,
+      "std": 0.0
+    }
+  }
+}

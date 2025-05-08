@@ -1,0 +1,24 @@
+{
+  "comparison": {
+    "accuracy": {
+      "mean": 0.38,
+      "std": 0.0497
+    },
+    "instruction_followed": {
+      "mean": 0.4633,
+      "std": 0.0613
+    },
+    "response_length": {
+      "mean": 309.88,
+      "std": 31.6825
+    },
+    "word_count": {
+      "mean": 55.02,
+      "std": 5.5984
+    },
+    "output_tokens": {
+      "mean": 89.02,
+      "std": 9.0429
+    }
+  }
+}

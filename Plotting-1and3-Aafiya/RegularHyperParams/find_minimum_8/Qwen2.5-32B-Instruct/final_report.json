@@ -1,0 +1,134 @@
+{
+  "even_count_8": {
+    "accuracy": {
+      "mean": 0.9967,
+      "std": 0.0047
+    },
+    "instruction_followed": {
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "response_length": {
+      "mean": 479.96,
+      "std": 123.708
+    },
+    "word_count": {
+      "mean": 100.97,
+      "std": 25.3853
+    },
+    "output_tokens": {
+      "mean": 184.86,
+      "std": 49.0755
+    }
+  },
+  "even_count_16": {
+    "accuracy": {
+      "mean": 0.9067,
+      "std": 0.0047
+    },
+    "instruction_followed": {
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "response_length": {
+      "mean": 588.81,
+      "std": 120.7377
+    },
+    "word_count": {
+      "mean": 129.55,
+      "std": 30.4322
+    },
+    "output_tokens": {
+      "mean": 262.16,
+      "std": 59.1387
+    }
+  },
+  "find_minimum_8": {
+    "accuracy": {
+      "mean": 0.97,
+      "std": 0.0216
+    },
+    "instruction_followed": {
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "response_length": {
+      "mean": 494.78,
+      "std": 140.7757
+    },
+    "word_count": {
+      "mean": 89.8,
+      "std": 24.9182
+    },
+    "output_tokens": {
+      "mean": 195.02,
+      "std": 56.9166
+    }
+  },
+  "find_minimum_16": {
+    "accuracy": {
+      "mean": 0.9867,
+      "std": 0.0125
+    },
+    "instruction_followed": {
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "response_length": {
+      "mean": 518.45,
+      "std": 261.7031
+    },
+    "word_count": {
+      "mean": 92.21,
+      "std": 48.1676
+    },
+    "output_tokens": {
+      "mean": 210.02,
+      "std": 108.1436
+    }
+  },
+  "sorting_8": {
+    "accuracy": {
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "instruction_followed": {
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "response_length": {
+      "mean": 467.25,
+      "std": 149.4159
+    },
+    "word_count": {
+      "mean": 82.86,
+      "std": 26.0542
+    },
+    "output_tokens": {
+      "mean": 196.78,
+      "std": 52.1409
+    }
+  },
+  "sorting_16": {
+    "accuracy": {
+      "mean": 0.9733,
+      "std": 0.0125
+    },
+    "instruction_followed": {
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "response_length": {
+      "mean": 446.8,
+      "std": 154.717
+    },
+    "word_count": {
+      "mean": 79.88,
+      "std": 27.4898
+    },
+    "output_tokens": {
+      "mean": 248.41,
+      "std": 82.0755
+    }
+  }
+}

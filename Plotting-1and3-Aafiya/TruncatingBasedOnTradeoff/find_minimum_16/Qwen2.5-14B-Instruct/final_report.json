@@ -1,0 +1,24 @@
+{
+  "find_minimum_16": {
+    "accuracy": {
+      "mean": 0.0133,
+      "std": 0.0125
+    },
+    "instruction_followed": {
+      "mean": 0.0,
+      "std": 0.0
+    },
+    "response_length": {
+      "mean": 180.22,
+      "std": 28.952
+    },
+    "word_count": {
+      "mean": 33.58,
+      "std": 5.2335
+    },
+    "output_tokens": {
+      "mean": 60.0,
+      "std": 0.0
+    }
+  }
+}

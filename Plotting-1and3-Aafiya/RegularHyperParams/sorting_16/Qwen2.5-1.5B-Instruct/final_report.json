@@ -1,0 +1,24 @@
+{
+  "sorting_16": {
+    "accuracy": {
+      "mean": 0.2267,
+      "std": 0.0386
+    },
+    "instruction_followed": {
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "response_length": {
+      "mean": 225.56,
+      "std": 286.995
+    },
+    "word_count": {
+      "mean": 39.95,
+      "std": 52.5448
+    },
+    "output_tokens": {
+      "mean": 129.43,
+      "std": 140.4453
+    }
+  }
+}
