@@ -19,11 +19,11 @@ def format_report_table(report_data):
             
             f"{metrics['instruction_followed']['mean']*100:.2f}% ± " + f"{metrics['instruction_followed']['std']*100:.2f}",
             
-            f"{metrics['output_tokens']['mean']:.2f} ± " + f"{metrics['output_tokens']['std']:.2f}" if metrics['output_tokens']['std'] else "0",
+            f"{metrics['output_tokens']['mean']:.2f} ± " + (f"{metrics['output_tokens']['std']:.2f}" if metrics['output_tokens']['std'] else "0"),
             
-            f"{metrics['response_length']['mean']:.2f} ± " + f"{metrics['response_length']['std']:.2f}" if metrics['response_length']['std'] else "0",
+            f"{metrics['response_length']['mean']:.2f} ± " + (f"{metrics['response_length']['std']:.2f}" if metrics['response_length']['std'] else "0"),
             
-            f"{metrics['word_count']['mean']:.2f} ± " + f"{metrics['word_count']['std']:.2f}" if metrics['word_count']['std'] else "0"
+            f"{metrics['word_count']['mean']:.2f} ± " + (f"{metrics['word_count']['std']:.2f}" if metrics['word_count']['std'] else "0")
         ]
         )
     
