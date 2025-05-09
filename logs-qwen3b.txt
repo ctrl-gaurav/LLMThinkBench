@@ -1,111 +1,0 @@
-2025-05-08 20:15:19,096 [INFO] Starting LLMThinkBench evaluation with parameters:
-{
-  "model_id": "Qwen/Qwen2.5-3B-Instruct",
-  "tasks": [
-    "sorting",
-    "comparison",
-    "even_count",
-    "find_minimum",
-    "mean"
-  ],
-  "datapoints": 10,
-  "folds": 2,
-  "range": [
-    -1000,
-    1000
-  ],
-  "list_sizes": [
-    8,
-    16
-  ],
-  "store_details": true,
-  "output_dir": null,
-  "tensor_parallel_size": 1,
-  "gpu_memory_utilization": 0.9,
-  "temperature": 0.7,
-  "top_p": 0.9,
-  "max_tokens": 512,
-  "seed": 42
-}
-INFO 05-08 20:15:19 __init__.py:207] Automatically detected platform cuda.
-INFO 05-08 20:15:39 config.py:549] This model supports multiple tasks: {'embed', 'reward', 'classify', 'score', 'generate'}. Defaulting to 'generate'.
-INFO 05-08 20:15:39 llm_engine.py:234] Initializing a V0 LLM engine (v0.7.3) with config: model='Qwen/Qwen2.5-3B-Instruct', speculative_config=None, tokenizer='Qwen/Qwen2.5-3B-Instruct', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, override_neuron_config=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=8192, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, disable_custom_all_reduce=False, quantization=None, enforce_eager=False, kv_cache_dtype=auto,  device_config=cuda, decoding_config=DecodingConfig(guided_decoding_backend='xgrammar'), observability_config=ObservabilityConfig(otlp_traces_endpoint=None, collect_model_forward_time=False, collect_model_execute_time=False), seed=0, served_model_name=Qwen/Qwen2.5-3B-Instruct, num_scheduler_steps=1, multi_step_stream_outputs=True, enable_prefix_caching=False, chunked_prefill_enabled=False, use_async_output_proc=True, disable_mm_preprocessor_cache=False, mm_processor_kwargs=None, pooler_config=None, compilation_config={"splitting_ops":[],"compile_sizes":[],"cudagraph_capture_sizes":[256,248,240,232,224,216,208,200,192,184,176,168,160,152,144,136,128,120,112,104,96,88,80,72,64,56,48,40,32,24,16,8,4,2,1],"max_capture_size":256}, use_cached_outputs=False, 
-INFO 05-08 20:15:41 cuda.py:229] Using Flash Attention backend.
-INFO 05-08 20:15:42 model_runner.py:1110] Starting to load model Qwen/Qwen2.5-3B-Instruct...
-INFO 05-08 20:15:44 weight_utils.py:254] Using model weights format ['*.safetensors']
-Loading safetensors checkpoint shards:   0% Completed | 0/2 [00:00<?, ?it/s]
-Loading safetensors checkpoint shards:  50% Completed | 1/2 [00:19<00:19, 19.10s/it]
-Loading safetensors checkpoint shards: 100% Completed | 2/2 [00:53<00:00, 28.09s/it]
-Loading safetensors checkpoint shards: 100% Completed | 2/2 [00:53<00:00, 26.74s/it]
-
-INFO 05-08 20:16:38 model_runner.py:1115] Loading model weights took 5.7915 GB
-INFO 05-08 20:16:40 worker.py:267] Memory profiling takes 2.49 seconds
-INFO 05-08 20:16:40 worker.py:267] the current vLLM instance can use total_gpu_memory (44.43GiB) x gpu_memory_utilization (0.90) = 39.99GiB
-INFO 05-08 20:16:40 worker.py:267] model weights take 5.79GiB; non_torch_memory takes 0.06GiB; PyTorch activation peak memory takes 1.42GiB; the rest of the memory reserved for KV Cache is 32.72GiB.
-INFO 05-08 20:16:41 executor_base.py:111] # cuda blocks: 59569, # CPU blocks: 7281
-INFO 05-08 20:16:41 executor_base.py:116] Maximum concurrency for 8192 tokens per request: 116.35x
-INFO 05-08 20:16:43 model_runner.py:1434] Capturing cudagraphs for decoding. This may lead to unexpected consequences if the model is not static. To run the model in eager mode, set 'enforce_eager=True' or use '--enforce-eager' in the CLI. If out-of-memory error occurs during cudagraph capture, consider decreasing `gpu_memory_utilization` or switching to eager mode. You can also reduce the `max_num_seqs` as needed to decrease memory usage.
-Capturing CUDA graph shapes:   0%|          | 0/35 [00:00<?, ?it/s]Capturing CUDA graph shapes:   3%|▎         | 1/35 [00:00<00:18,  1.81it/s]Capturing CUDA graph shapes:   6%|▌         | 2/35 [00:00<00:14,  2.28it/s]Capturing CUDA graph shapes:   9%|▊         | 3/35 [00:01<00:12,  2.50it/s]Capturing CUDA graph shapes:  11%|█▏        | 4/35 [00:01<00:12,  2.57it/s]Capturing CUDA graph shapes:  14%|█▍        | 5/35 [00:01<00:11,  2.69it/s]Capturing CUDA graph shapes:  17%|█▋        | 6/35 [00:02<00:10,  2.77it/s]Capturing CUDA graph shapes:  20%|██        | 7/35 [00:02<00:10,  2.78it/s]Capturing CUDA graph shapes:  23%|██▎       | 8/35 [00:03<00:09,  2.83it/s]Capturing CUDA graph shapes:  26%|██▌       | 9/35 [00:03<00:09,  2.85it/s]Capturing CUDA graph shapes:  29%|██▊       | 10/35 [00:03<00:08,  2.83it/s]Capturing CUDA graph shapes:  31%|███▏      | 11/35 [00:04<00:08,  2.86it/s]Capturing CUDA graph shapes:  34%|███▍      | 12/35 [00:04<00:08,  2.84it/s]Capturing CUDA graph shapes:  37%|███▋      | 13/35 [00:04<00:07,  2.86it/s]Capturing CUDA graph shapes:  40%|████      | 14/35 [00:05<00:07,  2.90it/s]Capturing CUDA graph shapes:  43%|████▎     | 15/35 [00:05<00:06,  2.90it/s]Capturing CUDA graph shapes:  46%|████▌     | 16/35 [00:05<00:06,  2.89it/s]Capturing CUDA graph shapes:  49%|████▊     | 17/35 [00:06<00:06,  2.92it/s]Capturing CUDA graph shapes:  51%|█████▏    | 18/35 [00:06<00:05,  2.94it/s]Capturing CUDA graph shapes:  54%|█████▍    | 19/35 [00:06<00:05,  2.92it/s]Capturing CUDA graph shapes:  57%|█████▋    | 20/35 [00:07<00:05,  2.93it/s]Capturing CUDA graph shapes:  60%|██████    | 21/35 [00:07<00:04,  2.92it/s]Capturing CUDA graph shapes:  63%|██████▎   | 22/35 [00:07<00:04,  2.92it/s]Capturing CUDA graph shapes:  66%|██████▌   | 23/35 [00:08<00:04,  2.93it/s]Capturing CUDA graph shapes:  69%|██████▊   | 24/35 [00:08<00:03,  2.95it/s]Capturing CUDA graph shapes:  71%|███████▏  | 25/35 [00:08<00:03,  2.96it/s]Capturing CUDA graph shapes:  74%|███████▍  | 26/35 [00:09<00:03,  2.98it/s]Capturing CUDA graph shapes:  77%|███████▋  | 27/35 [00:09<00:02,  2.97it/s]Capturing CUDA graph shapes:  80%|████████  | 28/35 [00:09<00:02,  2.98it/s]Capturing CUDA graph shapes:  83%|████████▎ | 29/35 [00:10<00:02,  2.95it/s]Capturing CUDA graph shapes:  86%|████████▌ | 30/35 [00:10<00:01,  2.97it/s]Capturing CUDA graph shapes:  89%|████████▊ | 31/35 [00:10<00:01,  2.92it/s]Capturing CUDA graph shapes:  91%|█████████▏| 32/35 [00:11<00:01,  2.95it/s]Capturing CUDA graph shapes:  94%|█████████▍| 33/35 [00:11<00:00,  2.94it/s]Capturing CUDA graph shapes:  97%|█████████▋| 34/35 [00:11<00:00,  2.96it/s]Capturing CUDA graph shapes: 100%|██████████| 35/35 [00:12<00:00,  2.33it/s]Capturing CUDA graph shapes: 100%|██████████| 35/35 [00:12<00:00,  2.79it/s]
-INFO 05-08 20:16:55 model_runner.py:1562] Graph capturing finished in 13 secs, took 0.23 GiB
-INFO 05-08 20:16:55 llm_engine.py:436] init engine (profile, create kv cache, warmup model) took 17.65 seconds
-2025-05-08 20:16:56,778 [INFO] Loaded model Qwen/Qwen2.5-3B-Instruct with tensor_parallel_size=1 and gpu_memory_utilization=0.9
-2025-05-08 20:16:56,779 [INFO] 
-========================================
-Running task: sorting
-========================================
-2025-05-08 20:16:56,779 [INFO] 
-========================================
-Evaluating sorting with list size 8
-========================================
-Test case 8 - Fold 1:   0%|          | 0/10 [00:00<?, ?it/s]Test case 8 - Fold 1:  10%|█         | 1/10 [00:02<00:23,  2.60s/it]Test case 8 - Fold 1:  20%|██        | 2/10 [00:06<00:25,  3.14s/it]Test case 8 - Fold 1:  30%|███       | 3/10 [00:08<00:19,  2.81s/it]Test case 8 - Fold 1:  30%|███       | 3/10 [00:08<00:20,  2.91s/it]
-[rank0]: Traceback (most recent call last):
-[rank0]:   File "/home/grads/aafiyahussain/miniconda3/envs/nlp/lib/python3.10/runpy.py", line 196, in _run_module_as_main
-[rank0]:     return _run_code(code, main_globals, None,
-[rank0]:   File "/home/grads/aafiyahussain/miniconda3/envs/nlp/lib/python3.10/runpy.py", line 86, in _run_code
-[rank0]:     exec(code, run_globals)
-[rank0]:   File "/storage1/projects/aafiya/NLP-Project/Task-standard-data/LLMThinkBench/llmthinkbench/cli.py", line 179, in <module>
-[rank0]:     main()
-[rank0]:   File "/storage1/projects/aafiya/NLP-Project/Task-standard-data/LLMThinkBench/llmthinkbench/cli.py", line 158, in main
-[rank0]:     task_metrics = task.run_evaluation(args.list_sizes)
-[rank0]:   File "/storage1/projects/aafiya/NLP-Project/Task-standard-data/LLMThinkBench/llmthinkbench/tasks/sorting_task.py", line 65, in run_evaluation
-[rank0]:     metrics = self.run_fold(data, list_size, fold)
-[rank0]:   File "/storage1/projects/aafiya/NLP-Project/Task-standard-data/LLMThinkBench/llmthinkbench/tasks/base_task.py", line 115, in run_fold
-[rank0]:     outputs = self.model_handler.model.generate(
-[rank0]:   File "/home/grads/aafiyahussain/miniconda3/envs/nlp/lib/python3.10/site-packages/vllm/utils.py", line 1057, in inner
-[rank0]:     return fn(*args, **kwargs)
-[rank0]:   File "/home/grads/aafiyahussain/miniconda3/envs/nlp/lib/python3.10/site-packages/vllm/entrypoints/llm.py", line 469, in generate
-[rank0]:     outputs = self._run_engine(use_tqdm=use_tqdm)
-[rank0]:   File "/home/grads/aafiyahussain/miniconda3/envs/nlp/lib/python3.10/site-packages/vllm/entrypoints/llm.py", line 1397, in _run_engine
-[rank0]:     step_outputs = self.llm_engine.step()
-[rank0]:   File "/home/grads/aafiyahussain/miniconda3/envs/nlp/lib/python3.10/site-packages/vllm/engine/llm_engine.py", line 1391, in step
-[rank0]:     outputs = self.model_executor.execute_model(
-[rank0]:   File "/home/grads/aafiyahussain/miniconda3/envs/nlp/lib/python3.10/site-packages/vllm/executor/executor_base.py", line 139, in execute_model
-[rank0]:     output = self.collective_rpc("execute_model",
-[rank0]:   File "/home/grads/aafiyahussain/miniconda3/envs/nlp/lib/python3.10/site-packages/vllm/executor/uniproc_executor.py", line 56, in collective_rpc
-[rank0]:     answer = run_method(self.driver_worker, method, args, kwargs)
-[rank0]:   File "/home/grads/aafiyahussain/miniconda3/envs/nlp/lib/python3.10/site-packages/vllm/utils.py", line 2196, in run_method
-[rank0]:     return func(*args, **kwargs)
-[rank0]:   File "/home/grads/aafiyahussain/miniconda3/envs/nlp/lib/python3.10/site-packages/vllm/worker/worker_base.py", line 420, in execute_model
-[rank0]:     output = self.model_runner.execute_model(
-[rank0]:   File "/home/grads/aafiyahussain/miniconda3/envs/nlp/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 116, in decorate_context
-[rank0]:     return func(*args, **kwargs)
-[rank0]:   File "/home/grads/aafiyahussain/miniconda3/envs/nlp/lib/python3.10/site-packages/vllm/worker/model_runner.py", line 1782, in execute_model
-[rank0]:     output: SamplerOutput = self.model.sample(
-[rank0]:   File "/home/grads/aafiyahussain/miniconda3/envs/nlp/lib/python3.10/site-packages/vllm/model_executor/models/qwen2.py", line 505, in sample
-[rank0]:     next_tokens = self.sampler(logits, sampling_metadata)
-[rank0]:   File "/home/grads/aafiyahussain/miniconda3/envs/nlp/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
-[rank0]:     return self._call_impl(*args, **kwargs)
-[rank0]:   File "/home/grads/aafiyahussain/miniconda3/envs/nlp/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
-[rank0]:     return forward_call(*args, **kwargs)
-[rank0]:   File "/home/grads/aafiyahussain/miniconda3/envs/nlp/lib/python3.10/site-packages/vllm/model_executor/layers/sampler.py", line 287, in forward
-[rank0]:     maybe_deferred_sample_results, maybe_sampled_tokens_tensor = _sample(
-[rank0]:   File "/home/grads/aafiyahussain/miniconda3/envs/nlp/lib/python3.10/site-packages/vllm/model_executor/layers/sampler.py", line 775, in _sample
-[rank0]:     return _sample_with_torch(
-[rank0]:   File "/home/grads/aafiyahussain/miniconda3/envs/nlp/lib/python3.10/site-packages/vllm/model_executor/layers/sampler.py", line 744, in _sample_with_torch
-[rank0]:     return get_pythonized_sample_results(
-[rank0]:   File "/home/grads/aafiyahussain/miniconda3/envs/nlp/lib/python3.10/site-packages/vllm/model_executor/layers/sampler.py", line 616, in get_pythonized_sample_results
-[rank0]:     sample_results = _random_sample(seq_groups,
-[rank0]:   File "/home/grads/aafiyahussain/miniconda3/envs/nlp/lib/python3.10/site-packages/vllm/model_executor/layers/sampler.py", line 485, in _random_sample
-[rank0]:     random_samples = random_samples.cpu()
-[rank0]: KeyboardInterrupt
-[rank0]:[W508 20:17:06.461132013 ProcessGroupNCCL.cpp:1250] Warning: WARNING: process group has NOT been destroyed before we destruct ProcessGroupNCCL. On normal program exit, the application should call destroy_process_group to ensure that any pending NCCL operations have finished in this process. In rare cases this process can exit before this point and block the progress of another member of the process group. This constraint has always been present,  but this warning has only been added since PyTorch 2.4 (function operator())
