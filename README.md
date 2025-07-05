@@ -9,65 +9,11 @@
 [![HuggingFace](https://img.shields.io/badge/HuggingFace-Compatible-yellow)](https://huggingface.co/)
 [![Leaderboard](https://img.shields.io/badge/🏆-Live%20Leaderboard-gold)](https://ctrl-gaurav.github.io/llmthinkbench.github.io/)
 
-<svg width="800" height="150" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#16213e;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#0f0f23;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#f093fb;stop-opacity:1" />
-    </linearGradient>
-  </defs>
-  
-  <rect width="800" height="150" fill="url(#bgGradient)" rx="15"/>
-  
-  <!-- Neural network connections -->
-  <g opacity="0.3" stroke="#667eea" stroke-width="1" fill="none">
-    <line x1="100" y1="50" x2="150" y2="75"/>
-    <line x1="100" y1="50" x2="150" y2="100"/>
-    <line x1="100" y1="100" x2="150" y2="75"/>
-    <line x1="100" y1="100" x2="150" y2="100"/>
-    <line x1="150" y1="75" x2="200" y2="75"/>
-    <line x1="150" y1="100" x2="200" y2="75"/>
-  </g>
-  
-  <!-- Neural nodes -->
-  <g fill="#667eea" opacity="0.7">
-    <circle cx="100" cy="50" r="6"/>
-    <circle cx="100" cy="100" r="6"/>
-    <circle cx="150" cy="75" r="8"/>
-    <circle cx="150" cy="100" r="6"/>
-    <circle cx="200" cy="75" r="10"/>
-  </g>
-  
-  <!-- Brain icon -->
-  <g transform="translate(50, 50)">
-    <text font-family="Arial, sans-serif" font-size="48" fill="url(#textGradient)">🧠</text>
-  </g>
-  
-  <!-- Main title -->
-  <text x="250" y="65" font-family="Arial Black, sans-serif" font-size="32" font-weight="bold" fill="url(#textGradient)">LLMThinkBench</text>
-  
-  <!-- Subtitle -->
-  <text x="250" y="85" font-family="Arial, sans-serif" font-size="14" fill="#e4e4e7">Advanced Reasoning &amp; Overthinking Detection</text>
-  
-  <!-- Performance metrics -->
-  <g transform="translate(580, 40)">
-    <rect width="180" height="70" fill="rgba(102, 126, 234, 0.1)" rx="8" stroke="#667eea" stroke-width="1"/>
-    <text x="10" y="20" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#667eea">Performance Metrics</text>
-    <text x="10" y="35" font-family="Arial, sans-serif" font-size="10" fill="#e4e4e7">⚡ Efficiency Analysis</text>
-    <text x="10" y="48" font-family="Arial, sans-serif" font-size="10" fill="#e4e4e7">🎯 Accuracy Testing</text>
-    <text x="10" y="61" font-family="Arial, sans-serif" font-size="10" fill="#e4e4e7">🧮 Math Reasoning</text>
-  </g>
-</svg>
+![LLMThinkBench Banner](https://img.shields.io/badge/🧠%20LLMThinkBench-Advanced%20Reasoning%20%26%20Overthinking%20Detection-blueviolet?style=for-the-badge&logo=brain&logoColor=white)
 
 </div>
 
 ## A Framework for Evaluating Basic Math Reasoning Capabilities and Overthinking of Language Models
-
 
 LLMThinkBench is a comprehensive framework designed to rigorously evaluate the basic math reasoning capabilities of Language Models, while also identifying instances of overthinking—where models apply unnecessarily complex logic to simple problems. Through standardized and reproducible benchmarks, it offers valuable insights into how well models perform on various reasoning tasks, from basic arithmetic to complex logical operations.
 
@@ -77,125 +23,23 @@ LLMThinkBench is a comprehensive framework designed to rigorously evaluate the b
 
 ### **[🔥 View Real-Time Model Rankings →](https://ctrl-gaurav.github.io/llmthinkbench.github.io/)**
 
-<a href="https://ctrl-gaurav.github.io/llmthinkbench.github.io/" target="_blank">
-<svg width="700" height="400" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#000428;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#004e92;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#f093fb;stop-opacity:1" />
-    </linearGradient>
-  </defs>
-  
-  <!-- Background -->
-  <rect width="700" height="400" fill="url(#bgGrad)" rx="10"/>
-  
-  <!-- Header -->
-  <rect width="700" height="60" fill="rgba(26, 26, 46, 0.9)" rx="10"/>
-  <text x="30" y="25" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="url(#headerGrad)">🧠 LLMThinkBench Leaderboard</text>
-  <text x="30" y="45" font-family="Arial, sans-serif" font-size="12" fill="#e4e4e7">Real-time Rankings • Overthinking Metrics • Performance Analysis</text>
-  
-  <!-- Top performers section -->
-  <g transform="translate(30, 80)">
-    <text x="0" y="20" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#667eea">🏆 Top Performers</text>
-    
-    <!-- Winner cards -->
-    <g transform="translate(0, 30)">
-      <!-- 1st place -->
-      <rect width="200" height="80" fill="rgba(26, 26, 46, 0.8)" rx="8" stroke="#ffd700" stroke-width="2"/>
-      <text x="10" y="20" font-family="Arial, sans-serif" font-size="20" fill="#ffd700">🥇</text>
-      <text x="40" y="20" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e4e4e7">GPT-4.1-mini</text>
-      <text x="10" y="40" font-family="Arial, sans-serif" font-size="10" fill="#10b981">Accuracy: 90.23%</text>
-      <text x="10" y="55" font-family="Arial, sans-serif" font-size="10" fill="#667eea">Efficiency: 0.768</text>
-      <text x="10" y="70" font-family="Arial, sans-serif" font-size="10" fill="#f093fb">Instruction: 98.14%</text>
-      
-      <!-- 2nd place -->
-      <rect x="220" width="200" height="80" fill="rgba(26, 26, 46, 0.8)" rx="8" stroke="#c0c0c0" stroke-width="2"/>
-      <text x="230" y="20" font-family="Arial, sans-serif" font-size="20" fill="#c0c0c0">🥈</text>
-      <text x="260" y="20" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e4e4e7">GPT-4.1</text>
-      <text x="230" y="40" font-family="Arial, sans-serif" font-size="10" fill="#10b981">Accuracy: 89.88%</text>
-      <text x="230" y="55" font-family="Arial, sans-serif" font-size="10" fill="#667eea">Efficiency: 0.752</text>
-      <text x="230" y="70" font-family="Arial, sans-serif" font-size="10" fill="#f093fb">Instruction: 97.79%</text>
-      
-      <!-- 3rd place -->
-      <rect x="440" width="200" height="80" fill="rgba(26, 26, 46, 0.8)" rx="8" stroke="#cd7f32" stroke-width="2"/>
-      <text x="450" y="20" font-family="Arial, sans-serif" font-size="20" fill="#cd7f32">🥉</text>
-      <text x="480" y="20" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e4e4e7">GPT-4o</text>
-      <text x="450" y="40" font-family="Arial, sans-serif" font-size="10" fill="#10b981">Accuracy: 87.56%</text>
-      <text x="450" y="55" font-family="Arial, sans-serif" font-size="10" fill="#667eea">Efficiency: 0.737</text>
-      <text x="450" y="70" font-family="Arial, sans-serif" font-size="10" fill="#f093fb">Instruction: 99.42%</text>
-    </g>
-  </g>
-  
-  <!-- Interactive features section -->
-  <g transform="translate(30, 210)">
-    <text x="0" y="20" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#667eea">📊 Interactive Features</text>
-    
-    <!-- Feature list -->
-    <g transform="translate(0, 30)">
-      <circle cx="8" cy="8" r="3" fill="#10b981"/>
-      <text x="20" y="12" font-family="Arial, sans-serif" font-size="11" fill="#e4e4e7">Real-time filtering and search</text>
-      
-      <circle cx="8" cy="28" r="3" fill="#667eea"/>
-      <text x="20" y="32" font-family="Arial, sans-serif" font-size="11" fill="#e4e4e7">Model comparison tools</text>
-      
-      <circle cx="8" cy="48" r="3" fill="#f093fb"/>
-      <text x="20" y="52" font-family="Arial, sans-serif" font-size="11" fill="#e4e4e7">Performance visualizations</text>
-      
-      <circle cx="8" cy="68" r="3" fill="#f59e0b"/>
-      <text x="20" y="72" font-family="Arial, sans-serif" font-size="11" fill="#e4e4e7">Overthinking analysis</text>
-      
-      <circle cx="8" cy="88" r="3" fill="#ef4444"/>
-      <text x="20" y="92" font-family="Arial, sans-serif" font-size="11" fill="#e4e4e7">Export functionality</text>
-    </g>
-  </g>
-  
-  <!-- Performance chart mockup -->
-  <g transform="translate(350, 210)">
-    <text x="0" y="20" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#667eea">📈 Live Performance Charts</text>
-    
-    <!-- Chart background -->
-    <rect x="0" y="30" width="300" height="120" fill="rgba(26, 26, 46, 0.6)" rx="8" stroke="rgba(102, 126, 234, 0.3)" stroke-width="1"/>
-    
-    <!-- Chart lines -->
-    <polyline points="20,140 60,120 100,100 140,90 180,85 220,80 260,75" 
-              fill="none" stroke="#10b981" stroke-width="2" opacity="0.8"/>
-    <polyline points="20,130 60,125 100,115 140,105 180,100 220,95 260,90" 
-              fill="none" stroke="#667eea" stroke-width="2" opacity="0.8"/>
-    <polyline points="20,120 60,110 100,105 140,100 180,95 220,90 260,85" 
-              fill="none" stroke="#f093fb" stroke-width="2" opacity="0.8"/>
-    
-    <!-- Chart dots -->
-    <g fill="#10b981" opacity="0.9">
-      <circle cx="20" cy="140" r="2"/>
-      <circle cx="100" cy="100" r="2"/>
-      <circle cx="180" cy="85" r="2"/>
-      <circle cx="260" cy="75" r="2"/>
-    </g>
-    
-    <!-- Chart legend -->
-    <g transform="translate(20, 160)">
-      <rect width="8" height="2" fill="#10b981"/>
-      <text x="12" y="6" font-family="Arial, sans-serif" font-size="8" fill="#e4e4e7">Accuracy</text>
-      
-      <rect x="60" width="8" height="2" fill="#667eea"/>
-      <text x="72" y="6" font-family="Arial, sans-serif" font-size="8" fill="#e4e4e7">Efficiency</text>
-      
-      <rect x="120" width="8" height="2" fill="#f093fb"/>
-      <text x="132" y="6" font-family="Arial, sans-serif" font-size="8" fill="#e4e4e7">Instruction</text>
-    </g>
-  </g>
-  
-  <!-- Call to action -->
-  <rect x="250" y="350" width="200" height="35" fill="url(#headerGrad)" rx="18"/>
-  <text x="350" y="372" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">🔥 View Live Leaderboard</text>
-</svg>
-</a>
+[![LLMThinkBench Leaderboard](https://img.shields.io/badge/📊%20Live%20Leaderboard-Real--time%20Rankings%20•%20Overthinking%20Metrics%20•%20Performance%20Analysis-000428?style=for-the-badge)](https://ctrl-gaurav.github.io/llmthinkbench.github.io/)
+
+**🥇 Top Performers:**
+| Rank | Model | Accuracy | Efficiency | Instruction Following |
+|------|-------|----------|------------|-----------------------|
+| 🥇 #1 | GPT-4.1-mini | 90.23% | 0.768 | 98.14% |
+| 🥈 #2 | GPT-4.1 | 89.88% | 0.752 | 97.79% |
+| 🥉 #3 | GPT-4o | 87.56% | 0.737 | 99.42% |
 
 *See how top models like **GPT-4.1**, **Phi-4**, **Qwen**, and **Llama** compare on reasoning efficiency*
+
+**🔍 Interactive Features:**
+- ⚡ Real-time filtering and search
+- 📊 Model comparison tools  
+- 📈 Performance visualizations
+- 🧮 Overthinking analysis
+- 💾 Export functionality
 
 </div>
 
@@ -624,7 +468,7 @@ LLMThinkBench is licensed under the MIT License - see the [LICENSE](LICENSE) fil
 
 If you use LLMThinkBench in your research, please cite:
 
-```
+```bibtex
 @software{llmthinkbench2025,
   author = {Gaurav Srivastava, Aafiya Hussain, Sriram Srinivasan, Xuan Wang},
   title = {LLMThinkBench: Advanced Reasoning and Overthinking Evaluation Framework for LLMs},
