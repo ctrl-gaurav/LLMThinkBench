@@ -1,33 +1,213 @@
 # 🧠 LLMThinkBench
 
+<div align="center">
+
 [![PyPI version](https://img.shields.io/badge/pypi-v0.1.6-blue)](https://pypi.org/project/llmthinkbench/0.1.6/)
 [![Python](https://img.shields.io/badge/Python-3.12%2B-blue)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 [![vLLM](https://img.shields.io/badge/Powered%20by-vLLM-orange)](https://github.com/vllm-project/vllm)
 [![HuggingFace](https://img.shields.io/badge/HuggingFace-Compatible-yellow)](https://huggingface.co/)
+[![Leaderboard](https://img.shields.io/badge/🏆-Live%20Leaderboard-gold)](https://ctrl-gaurav.github.io/llmthinkbench.github.io/)
+
+<svg width="800" height="150" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#16213e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0f0f23;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f093fb;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="800" height="150" fill="url(#bgGradient)" rx="15"/>
+  
+  <!-- Neural network connections -->
+  <g opacity="0.3" stroke="#667eea" stroke-width="1" fill="none">
+    <line x1="100" y1="50" x2="150" y2="75"/>
+    <line x1="100" y1="50" x2="150" y2="100"/>
+    <line x1="100" y1="100" x2="150" y2="75"/>
+    <line x1="100" y1="100" x2="150" y2="100"/>
+    <line x1="150" y1="75" x2="200" y2="75"/>
+    <line x1="150" y1="100" x2="200" y2="75"/>
+  </g>
+  
+  <!-- Neural nodes -->
+  <g fill="#667eea" opacity="0.7">
+    <circle cx="100" cy="50" r="6"/>
+    <circle cx="100" cy="100" r="6"/>
+    <circle cx="150" cy="75" r="8"/>
+    <circle cx="150" cy="100" r="6"/>
+    <circle cx="200" cy="75" r="10"/>
+  </g>
+  
+  <!-- Brain icon -->
+  <g transform="translate(50, 50)">
+    <text font-family="Arial, sans-serif" font-size="48" fill="url(#textGradient)">🧠</text>
+  </g>
+  
+  <!-- Main title -->
+  <text x="250" y="65" font-family="Arial Black, sans-serif" font-size="32" font-weight="bold" fill="url(#textGradient)">LLMThinkBench</text>
+  
+  <!-- Subtitle -->
+  <text x="250" y="85" font-family="Arial, sans-serif" font-size="14" fill="#e4e4e7">Advanced Reasoning &amp; Overthinking Detection</text>
+  
+  <!-- Performance metrics -->
+  <g transform="translate(580, 40)">
+    <rect width="180" height="70" fill="rgba(102, 126, 234, 0.1)" rx="8" stroke="#667eea" stroke-width="1"/>
+    <text x="10" y="20" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#667eea">Performance Metrics</text>
+    <text x="10" y="35" font-family="Arial, sans-serif" font-size="10" fill="#e4e4e7">⚡ Efficiency Analysis</text>
+    <text x="10" y="48" font-family="Arial, sans-serif" font-size="10" fill="#e4e4e7">🎯 Accuracy Testing</text>
+    <text x="10" y="61" font-family="Arial, sans-serif" font-size="10" fill="#e4e4e7">🧮 Math Reasoning</text>
+  </g>
+</svg>
+
+</div>
 
 ## A Framework for Evaluating Basic Math Reasoning Capabilities and Overthinking of Language Models
 
+
 LLMThinkBench is a comprehensive framework designed to rigorously evaluate the basic math reasoning capabilities of Language Models, while also identifying instances of overthinking—where models apply unnecessarily complex logic to simple problems. Through standardized and reproducible benchmarks, it offers valuable insights into how well models perform on various reasoning tasks, from basic arithmetic to complex logical operations.
 
-<!-- <div align="center">
-  <img src="https://raw.githubusercontent.com/ctrl-gaurav/LLMThinkBench/main/assets/llmthinkbench_banner.png" alt="LLMThinkBench" width="600"/>
-</div> -->
+## 🏆 **Live Leaderboard**
 
-<!-- <div align="center">
-  <span style="font-size: 240px;">🧠</span>
-</div> -->
+<div align="center">
+
+### **[🔥 View Real-Time Model Rankings →](https://ctrl-gaurav.github.io/llmthinkbench.github.io/)**
+
+<a href="https://ctrl-gaurav.github.io/llmthinkbench.github.io/" target="_blank">
+<svg width="700" height="400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#000428;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#004e92;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f093fb;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="700" height="400" fill="url(#bgGrad)" rx="10"/>
+  
+  <!-- Header -->
+  <rect width="700" height="60" fill="rgba(26, 26, 46, 0.9)" rx="10"/>
+  <text x="30" y="25" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="url(#headerGrad)">🧠 LLMThinkBench Leaderboard</text>
+  <text x="30" y="45" font-family="Arial, sans-serif" font-size="12" fill="#e4e4e7">Real-time Rankings • Overthinking Metrics • Performance Analysis</text>
+  
+  <!-- Top performers section -->
+  <g transform="translate(30, 80)">
+    <text x="0" y="20" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#667eea">🏆 Top Performers</text>
+    
+    <!-- Winner cards -->
+    <g transform="translate(0, 30)">
+      <!-- 1st place -->
+      <rect width="200" height="80" fill="rgba(26, 26, 46, 0.8)" rx="8" stroke="#ffd700" stroke-width="2"/>
+      <text x="10" y="20" font-family="Arial, sans-serif" font-size="20" fill="#ffd700">🥇</text>
+      <text x="40" y="20" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e4e4e7">GPT-4.1-mini</text>
+      <text x="10" y="40" font-family="Arial, sans-serif" font-size="10" fill="#10b981">Accuracy: 90.23%</text>
+      <text x="10" y="55" font-family="Arial, sans-serif" font-size="10" fill="#667eea">Efficiency: 0.768</text>
+      <text x="10" y="70" font-family="Arial, sans-serif" font-size="10" fill="#f093fb">Instruction: 98.14%</text>
+      
+      <!-- 2nd place -->
+      <rect x="220" width="200" height="80" fill="rgba(26, 26, 46, 0.8)" rx="8" stroke="#c0c0c0" stroke-width="2"/>
+      <text x="230" y="20" font-family="Arial, sans-serif" font-size="20" fill="#c0c0c0">🥈</text>
+      <text x="260" y="20" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e4e4e7">GPT-4.1</text>
+      <text x="230" y="40" font-family="Arial, sans-serif" font-size="10" fill="#10b981">Accuracy: 89.88%</text>
+      <text x="230" y="55" font-family="Arial, sans-serif" font-size="10" fill="#667eea">Efficiency: 0.752</text>
+      <text x="230" y="70" font-family="Arial, sans-serif" font-size="10" fill="#f093fb">Instruction: 97.79%</text>
+      
+      <!-- 3rd place -->
+      <rect x="440" width="200" height="80" fill="rgba(26, 26, 46, 0.8)" rx="8" stroke="#cd7f32" stroke-width="2"/>
+      <text x="450" y="20" font-family="Arial, sans-serif" font-size="20" fill="#cd7f32">🥉</text>
+      <text x="480" y="20" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#e4e4e7">GPT-4o</text>
+      <text x="450" y="40" font-family="Arial, sans-serif" font-size="10" fill="#10b981">Accuracy: 87.56%</text>
+      <text x="450" y="55" font-family="Arial, sans-serif" font-size="10" fill="#667eea">Efficiency: 0.737</text>
+      <text x="450" y="70" font-family="Arial, sans-serif" font-size="10" fill="#f093fb">Instruction: 99.42%</text>
+    </g>
+  </g>
+  
+  <!-- Interactive features section -->
+  <g transform="translate(30, 210)">
+    <text x="0" y="20" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#667eea">📊 Interactive Features</text>
+    
+    <!-- Feature list -->
+    <g transform="translate(0, 30)">
+      <circle cx="8" cy="8" r="3" fill="#10b981"/>
+      <text x="20" y="12" font-family="Arial, sans-serif" font-size="11" fill="#e4e4e7">Real-time filtering and search</text>
+      
+      <circle cx="8" cy="28" r="3" fill="#667eea"/>
+      <text x="20" y="32" font-family="Arial, sans-serif" font-size="11" fill="#e4e4e7">Model comparison tools</text>
+      
+      <circle cx="8" cy="48" r="3" fill="#f093fb"/>
+      <text x="20" y="52" font-family="Arial, sans-serif" font-size="11" fill="#e4e4e7">Performance visualizations</text>
+      
+      <circle cx="8" cy="68" r="3" fill="#f59e0b"/>
+      <text x="20" y="72" font-family="Arial, sans-serif" font-size="11" fill="#e4e4e7">Overthinking analysis</text>
+      
+      <circle cx="8" cy="88" r="3" fill="#ef4444"/>
+      <text x="20" y="92" font-family="Arial, sans-serif" font-size="11" fill="#e4e4e7">Export functionality</text>
+    </g>
+  </g>
+  
+  <!-- Performance chart mockup -->
+  <g transform="translate(350, 210)">
+    <text x="0" y="20" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#667eea">📈 Live Performance Charts</text>
+    
+    <!-- Chart background -->
+    <rect x="0" y="30" width="300" height="120" fill="rgba(26, 26, 46, 0.6)" rx="8" stroke="rgba(102, 126, 234, 0.3)" stroke-width="1"/>
+    
+    <!-- Chart lines -->
+    <polyline points="20,140 60,120 100,100 140,90 180,85 220,80 260,75" 
+              fill="none" stroke="#10b981" stroke-width="2" opacity="0.8"/>
+    <polyline points="20,130 60,125 100,115 140,105 180,100 220,95 260,90" 
+              fill="none" stroke="#667eea" stroke-width="2" opacity="0.8"/>
+    <polyline points="20,120 60,110 100,105 140,100 180,95 220,90 260,85" 
+              fill="none" stroke="#f093fb" stroke-width="2" opacity="0.8"/>
+    
+    <!-- Chart dots -->
+    <g fill="#10b981" opacity="0.9">
+      <circle cx="20" cy="140" r="2"/>
+      <circle cx="100" cy="100" r="2"/>
+      <circle cx="180" cy="85" r="2"/>
+      <circle cx="260" cy="75" r="2"/>
+    </g>
+    
+    <!-- Chart legend -->
+    <g transform="translate(20, 160)">
+      <rect width="8" height="2" fill="#10b981"/>
+      <text x="12" y="6" font-family="Arial, sans-serif" font-size="8" fill="#e4e4e7">Accuracy</text>
+      
+      <rect x="60" width="8" height="2" fill="#667eea"/>
+      <text x="72" y="6" font-family="Arial, sans-serif" font-size="8" fill="#e4e4e7">Efficiency</text>
+      
+      <rect x="120" width="8" height="2" fill="#f093fb"/>
+      <text x="132" y="6" font-family="Arial, sans-serif" font-size="8" fill="#e4e4e7">Instruction</text>
+    </g>
+  </g>
+  
+  <!-- Call to action -->
+  <rect x="250" y="350" width="200" height="35" fill="url(#headerGrad)" rx="18"/>
+  <text x="350" y="372" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">🔥 View Live Leaderboard</text>
+</svg>
+</a>
+
+*See how top models like **GPT-4.1**, **Phi-4**, **Qwen**, and **Llama** compare on reasoning efficiency*
+
+</div>
 
 ## 📰 News & Releases
 
-- **v0.1.6** (Latest) - Enhanced reporting with efficiency rankings to identify models that achieve high accuracy with minimal tokens. Introduced **Efficiency Score** and **Overthinking Ratio** metrics that properly balance accuracy and verbosity. 
+- **v0.1.6** (Latest) - Enhanced reporting with efficiency rankings to identify models that achieve high accuracy with minimal tokens. Introduced **Overthinking Score** metric that properly balances accuracy and verbosity. 
 - **v0.1.5** - Major backend revamp with robust error handling, intelligent fallback support, better token estimation, flexible device control, and smoother interruption handling.
 - **v0.1.4** - Major improvements to parsing robustness for fair evaluations. Enhanced result validation mechanisms and edge case handling.
 - **v0.1.3** - Added mean, median, mode tasks and implemented GPU customization options, allowing users to specify GPU memory allocation.
 - **v0.1.2** - Expanded task library with find_maximum, find_minimum, absolute_difference, and division tasks. Improved documentation.
 - **v0.1.1** - Fixed several inference issues and optimized performance using vLLM for high-throughput evaluation.
 - **v0.1.0** - Initial release with core functionality including sorting and comparison tasks.
-
 
 ## 🌟 Key Features
 
@@ -42,38 +222,34 @@ LLMThinkBench is a comprehensive framework designed to rigorously evaluate the b
 - **Reproducible Results**: Consistent methodology across model comparisons
 - **Output Analysis**: Identify when and how models make reasoning errors
 
-## 🧮 Revolutionary Overthinking Metrics
+## 🧮 Revolutionary Overthinking Score
 
-### Efficiency Score
-**Formula**: `Efficiency Score = 2 × (Accuracy × Token_Efficiency) / (Accuracy + Token_Efficiency)`
+### **The Problem**
+Traditional benchmarks miss a critical insight: **efficiency matters**. A model that achieves 95% accuracy with 50 tokens is often superior to one that achieves 98% accuracy with 500 tokens, especially in production environments where compute costs and response times matter.
+
+### **Our Solution: Overthinking Score**
+We introduce a novel metric that balances accuracy and efficiency using the F1-harmonic mean approach:
+
+**Formula**: `Overthinking Score = 2 × (Accuracy × Token_Efficiency) / (Accuracy + Token_Efficiency)`
 
 Where:
 - `Token_Efficiency = 1 - normalized_tokens`
 - `normalized_tokens = (tokens - min_tokens) / (max_tokens - min_tokens)`
 
-**Benefits**:
-- **Balances accuracy and conciseness** using harmonic mean
-- **Penalizes verbosity** while rewarding high accuracy
-- **Provides intuitive ranking**: Higher score = better model
-- **Handles edge cases** gracefully
+### **Why F1-Harmonic Mean?**
+- **Prevents gaming**: Models can't achieve high scores with just accuracy OR efficiency alone
+- **Balanced optimization**: Encourages improvement in both dimensions simultaneously  
+- **Penalizes extremes**: Heavily verbose or inaccurate models get low scores
+- **Intuitive interpretation**: Higher score = better overall performance
 
-### Overthinking Ratio
-**Formula**: `Overthinking Ratio = (tokens - baseline) / accuracy`
+### **Example Comparison**
+| Model | Accuracy | Tokens | Overthinking Score | Verdict |
+|-------|----------|--------|-------------------|---------|
+| Model A | 98% | 500 | 0.776 | High accuracy, too verbose |
+| Model B | 94% | 100 | 0.891 | **Better balanced** |
+| Model C | 99% | 150 | 0.925 | **🏆 Optimal** |
 
-**Interpretation**:
-- **Lower values indicate less overthinking**
-- Measures "extra tokens per accuracy point"
-- Helps identify models that are unnecessarily verbose
-- Infinite ratio for models with zero accuracy
-
-### Example Comparison
-| Model | Accuracy | Tokens | Efficiency Score | Overthinking Ratio |
-|-------|----------|--------|------------------|-------------------|
-| Model A | 98% | 100 | 0.892 | 50.0 |
-| Model B | 99% | 120 | 0.881 | 70.7 |
-
-**Result**: Model A is more efficient despite slightly lower accuracy!
-
+**Result**: Model C achieves the best balance of accuracy and efficiency!
 
 ## 📊 Supported Tasks
 
@@ -112,18 +288,25 @@ pip install -e .
 
 ```bash
 # Basic usage
-llmthinkbench --model_id "Qwen/Qwen2.5-1.5B-Instruct" --tasks sorting comparison
+llmthinkbench --model_id "Qwen/Qwen3-4B" --tasks sorting comparison
 
 # Comprehensive evaluation
-llmthinkbench --model_id "meta-llama/Llama-2-7b-chat-hf" \
-  --tensor_parallel_size 2 \
-  --tasks sorting comparison sum multiplication \
-  --datapoints 1000 \
-  --list_sizes 8 16 32 \
+llmthinkbench --model_id "Qwen/Qwen3-4B" \
+  --tasks "sorting comparison sum multiplication odd_count even_count absolute_difference division find_maximum find_minimum mean median mode subtraction" \
+  --datapoints 100 \
   --folds 3 \
   --range -1000 1000 \
+  --list_sizes "8 16 32 64" \
+  --cuda_device "cuda:0" \
+  --tensor_parallel_size 1 \
+  --gpu_memory_utilization 0.98 \
+  --temperature 0.1 \
+  --top_p 0.9 \
+  --max_tokens 1024 \
+  --trust_remote_code \
   --store_details \
-  --output_dir "./llama2_evaluation_results"
+  --output_dir "qwen3_4b_eval" \
+  --seed 42
 ```
 
 ### Python API
@@ -133,13 +316,13 @@ from llmthinkbench import evaluate
 
 # Simple evaluation
 results = evaluate(
-    model_id="meta-llama/Llama-2-7b-chat-hf",
+    model_id="Qwen/Qwen3-4B",
     tasks=["sorting", "comparison", "sum"]
 )
 
 # Advanced configuration
 results = evaluate(
-    model_id="meta-llama/Llama-2-7b-chat-hf",
+    model_id="Qwen/Qwen3-4B",
     tasks=["sorting", "comparison", "sum", "multiplication"],
     datapoints=500,
     list_sizes=[8, 16, 32],
@@ -147,11 +330,11 @@ results = evaluate(
     range=[-1000, 1000],
     store_details=True,
     output_dir="./custom_results",
-    tensor_parallel_size=2,
-    gpu_memory_utilization=0.9,
-    temperature=0.7,
+    tensor_parallel_size=1,
+    gpu_memory_utilization=0.98,
+    temperature=0.1,
     top_p=0.9,
-    max_tokens=512
+    max_tokens=1024
 )
 ```
 
@@ -165,44 +348,44 @@ from llmthinkbench.utils.reporting import generate_final_report
 
 # Initialize model
 model_handler = ModelHandler(
-    model_id="meta-llama/Llama-2-7b-chat-hf",
-    tensor_parallel_size=2,
-    gpu_memory_utilization=0.9
+    model_id="Qwen/Qwen3-4B",
+    tensor_parallel_size=1,
+    gpu_memory_utilization=0.98
 )
 
 # Configure output directory
-output_dir = "llama2_eval_results"
+output_dir = "qwen3_4b_eval_results"
 
 # Run sorting task
 sorting = SortingTask(
     model_handler=model_handler,
     output_dir=output_dir,
-    min_val=-100,
-    max_val=100,
+    min_val=-1000,
+    max_val=1000,
     num_folds=3,
-    num_samples=500,
+    num_samples=100,
     store_details=True,
-    temperature=0.7,
+    temperature=0.1,
     top_p=0.9,
-    max_tokens=512
+    max_tokens=1024
 )
 
 # Evaluate multiple list sizes
-list_sizes = [8, 16, 32]
+list_sizes = [8, 16, 32, 64]
 sorting_metrics = sorting.run_evaluation(list_sizes)
 
 # Run comparison task
 comparison = ComparisonTask(
     model_handler=model_handler,
     output_dir=output_dir,
-    min_val=-100,
-    max_val=100,
+    min_val=-1000,
+    max_val=1000,
     num_folds=3,
-    num_samples=500,
+    num_samples=100,
     store_details=True,
-    temperature=0.7,
+    temperature=0.1,
     top_p=0.9,
-    max_tokens=512
+    max_tokens=1024
 )
 
 comparison_metrics = comparison.run_evaluation()
@@ -217,94 +400,28 @@ report = generate_final_report(all_metrics, list_sizes, output_dir)
 Below is an example report generated by LLMThinkBench v0.1.6:
 
 ```
-+------------------+----------------------------+------------------+---------------------+-----------------------------------+-------------------------+------------------------------+------------------------------+
-| Task             | Accuracy                   | Efficiency Score | Overthinking Ratio  | Instruction Followed              | Tokens                  | Chars                        | Words                        |
-+------------------+----------------------------+------------------+---------------------+-----------------------------------+-------------------------+------------------------------+------------------------------+
-| sorting_8        | 95.20% ± 3.60              | 0.892            | 50.0                | 98.80% ± 1.20                     | 186.2 ± 32.6            | 612.6 ± 98.4                 | 93.5 ± 15.6                  |
-| sorting_16       | 87.40% ± 4.80              | 0.743            | 89.2                | 96.70% ± 2.30                     | 312.5 ± 48.7            | 982.3 ± 156.5                | 167.9 ± 26.9                 |
-| sorting_32       | 68.60% ± 7.20              | 0.521            | 198.5               | 92.40% ± 3.50                     | 645.7 ± 92.2            | 1872.2 ± 283.6               | 348.8 ± 52.8                 |
-| comparison       | 99.20% ± 1.20              | 0.951            | 44.1                | 99.60% ± 0.50                     | 93.8 ± 16.2             | 324.8 ± 52.2                 | 48.3 ± 8.1                   |
-| sum_8            | 97.80% ± 2.10              | 0.923            | 35.2                | 99.30% ± 0.70                     | 134.6 ± 23.9            | 452.2 ± 78.3                 | 68.9 ± 11.7                  |
-| multiplication   | 94.60% ± 3.50              | 0.885            | 47.9                | 98.40% ± 1.60                     | 114.3 ± 19.4            | 386.7 ± 64.3                 | 58.4 ± 9.7                   |
-+------------------+----------------------------+------------------+---------------------+-----------------------------------+-------------------------+------------------------------+------------------------------+
++------------------+----------------------------+------------------+-----------------------------------+-------------------------+------------------------------+------------------------------+
+| Task             | Accuracy                   | Overthinking Score | Instruction Followed              | Tokens                  | Chars                        | Words                        |
++------------------+----------------------------+------------------+-----------------------------------+-------------------------+------------------------------+------------------------------+
+| sorting_8        | 95.20% ± 3.60              | 0.892              | 98.80% ± 1.20                     | 186.2 ± 32.6            | 612.6 ± 98.4                 | 93.5 ± 15.6                  |
+| sorting_16       | 87.40% ± 4.80              | 0.743              | 96.70% ± 2.30                     | 312.5 ± 48.7            | 982.3 ± 156.5                | 167.9 ± 26.9                 |
+| sorting_32       | 68.60% ± 7.20              | 0.521              | 92.40% ± 3.50                     | 645.7 ± 92.2            | 1872.2 ± 283.6               | 348.8 ± 52.8                 |
+| comparison       | 99.20% ± 1.20              | 0.951              | 99.60% ± 0.50                     | 93.8 ± 16.2             | 324.8 ± 52.2                 | 48.3 ± 8.1                   |
+| sum_8            | 97.80% ± 2.10              | 0.923              | 99.30% ± 0.70                     | 134.6 ± 23.9            | 452.2 ± 78.3                 | 68.9 ± 11.7                  |
+| multiplication   | 94.60% ± 3.50              | 0.885              | 98.40% ± 1.60                     | 114.3 ± 19.4            | 386.7 ± 64.3                 | 58.4 ± 9.7                   |
++------------------+----------------------------+------------------+-----------------------------------+-------------------------+------------------------------+------------------------------+
 
 🏆 Efficiency Rankings (Best Balance of Accuracy & Conciseness)
-+--------+---------------+------------------+----------+--------+---------------------+
-|  Rank  | Task          | Efficiency Score | Accuracy | Tokens | Overthinking Ratio  |
-+--------+---------------+------------------+----------+--------+---------------------+
-|   1    | comparison    | 0.951            | 99.2%    | 93.8   | 44.1                |
-|   2    | sum_8         | 0.923            | 97.8%    | 134.6  | 35.2                |
-|   3    | sorting_8     | 0.892            | 95.2%    | 186.2  | 50.0                |
-|   4    | multiplication| 0.885            | 94.6%    | 114.3  | 47.9                |
-|   5    | sorting_16    | 0.743            | 87.4%    | 312.5  | 89.2                |
-|   6    | sorting_32    | 0.521            | 68.6%    | 645.7  | 198.5               |
-+--------+---------------+------------------+----------+--------+---------------------+
-```
-
-## 📈 Visualization
-
-You can visualize LLMThinkBench results including the new efficiency metrics:
-
-```python
-import json
-import matplotlib.pyplot as plt
-import pandas as pd
-
-# Load results
-with open("final_report.json") as f:
-    results = json.load(f)
-
-# Extract efficiency rankings
-rankings = results['efficiency_rankings']
-
-# Create dataframe for plotting
-df = pd.DataFrame(rankings)
-
-# Plot efficiency comparison
-fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(15, 10))
-
-# Efficiency Score vs Accuracy
-scatter = ax1.scatter(df['accuracy']*100, df['efficiency_score'], 
-                     s=100, alpha=0.7, c=df['tokens'], cmap='viridis')
-ax1.set_xlabel('Accuracy (%)')
-ax1.set_ylabel('Efficiency Score')
-ax1.set_title('Efficiency Score vs Accuracy')
-plt.colorbar(scatter, ax=ax1, label='Tokens')
-
-# Add task labels
-for i, row in df.iterrows():
-    ax1.annotate(row['task'], (row['accuracy']*100, row['efficiency_score']), 
-                xytext=(5, 5), textcoords='offset points', fontsize=8)
-
-# Efficiency Score ranking
-ax2.barh(range(len(df)), df['efficiency_score'])
-ax2.set_yticks(range(len(df)))
-ax2.set_yticklabels(df['task'])
-ax2.set_xlabel('Efficiency Score')
-ax2.set_title('Efficiency Score Rankings')
-ax2.invert_yaxis()
-
-# Overthinking Ratio vs Accuracy
-# Filter out infinite values for plotting
-finite_df = df[df['overthinking_ratio'] != float('inf')]
-scatter2 = ax3.scatter(finite_df['accuracy']*100, finite_df['overthinking_ratio'], 
-                      s=100, alpha=0.7, c=finite_df['tokens'], cmap='plasma')
-ax3.set_xlabel('Accuracy (%)')
-ax3.set_ylabel('Overthinking Ratio')
-ax3.set_title('Overthinking Ratio vs Accuracy')
-plt.colorbar(scatter2, ax=ax3, label='Tokens')
-
-# Tokens vs Accuracy with Efficiency Score as color
-scatter3 = ax4.scatter(df['accuracy']*100, df['tokens'], 
-                      s=100, alpha=0.7, c=df['efficiency_score'], cmap='coolwarm')
-ax4.set_xlabel('Accuracy (%)')
-ax4.set_ylabel('Tokens')
-ax4.set_title('Tokens vs Accuracy (colored by Efficiency)')
-plt.colorbar(scatter3, ax=ax4, label='Efficiency Score')
-
-plt.tight_layout()
-plt.savefig("efficiency_analysis.png", dpi=300, bbox_inches='tight')
-plt.show()
++--------+---------------+------------------+----------+--------+
+|  Rank  | Task          | Overthinking Score | Accuracy | Tokens |
++--------+---------------+------------------+----------+--------+
+|   1    | comparison    | 0.951            | 99.2%    | 93.8   |
+|   2    | sum_8         | 0.923            | 97.8%    | 134.6  |
+|   3    | sorting_8     | 0.892            | 95.2%    | 186.2  |
+|   4    | multiplication| 0.885            | 94.6%    | 114.3  |
+|   5    | sorting_16    | 0.743            | 87.4%    | 312.5  |
+|   6    | sorting_32    | 0.521            | 68.6%    | 645.7  |
++--------+---------------+------------------+----------+--------+
 ```
 
 ## ⚙️ Advanced Configuration
@@ -326,6 +443,62 @@ plt.show()
 | `--temperature` | Sampling temperature | `0.7` |
 | `--top_p` | Sampling top_p value | `0.9` |
 | `--max_tokens` | Maximum tokens for sampling | `512` |
+
+## 📈 Visualization
+
+You can visualize LLMThinkBench results including the new overthinking metrics:
+
+```python
+import json
+import matplotlib.pyplot as plt
+import pandas as pd
+
+# Load results
+with open("qwen3_4b_eval/final_report.json") as f:
+    results = json.load(f)
+
+# Extract efficiency rankings
+rankings = results['efficiency_rankings']
+
+# Create dataframe for plotting
+df = pd.DataFrame(rankings)
+
+# Plot efficiency comparison
+fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(15, 10))
+
+# Overthinking Score vs Accuracy
+scatter = ax1.scatter(df['accuracy']*100, df['overthinking_score'], 
+                     s=100, alpha=0.7, c=df['tokens'], cmap='viridis')
+ax1.set_xlabel('Accuracy (%)')
+ax1.set_ylabel('Overthinking Score')
+ax1.set_title('Overthinking Score vs Accuracy')
+plt.colorbar(scatter, ax=ax1, label='Tokens')
+
+# Add task labels
+for i, row in df.iterrows():
+    ax1.annotate(row['task'], (row['accuracy']*100, row['overthinking_score']), 
+                xytext=(5, 5), textcoords='offset points', fontsize=8)
+
+# Overthinking Score ranking
+ax2.barh(range(len(df)), df['overthinking_score'])
+ax2.set_yticks(range(len(df)))
+ax2.set_yticklabels(df['task'])
+ax2.set_xlabel('Overthinking Score')
+ax2.set_title('Overthinking Score Rankings')
+ax2.invert_yaxis()
+
+# Tokens vs Accuracy with Overthinking Score as color
+scatter3 = ax4.scatter(df['accuracy']*100, df['tokens'], 
+                      s=100, alpha=0.7, c=df['overthinking_score'], cmap='coolwarm')
+ax4.set_xlabel('Accuracy (%)')
+ax4.set_ylabel('Tokens')
+ax4.set_title('Tokens vs Accuracy (colored by Overthinking Score)')
+plt.colorbar(scatter3, ax=ax4, label='Overthinking Score')
+
+plt.tight_layout()
+plt.savefig("overthinking_analysis.png", dpi=300, bbox_inches='tight')
+plt.show()
+```
 
 ## 🧩 Extending with Custom Tasks
 
@@ -428,7 +601,7 @@ def parse_boxed_answer(text):
 4. Use your custom task:
 
 ```bash
-llmthinkbench --model_id "meta-llama/Llama-2-7b-chat-hf" --tasks custom_task
+llmthinkbench --model_id "Qwen/Qwen3-4B" --tasks custom_task
 ```
 
 ## 🔍 Contributing
