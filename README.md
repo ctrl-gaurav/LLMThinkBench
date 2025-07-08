@@ -469,12 +469,14 @@ LLMThinkBench is licensed under the MIT License - see the [LICENSE](LICENSE) fil
 If you use LLMThinkBench in your research, please cite:
 
 ```bibtex
-@software{llmthinkbench2025,
-  author = {Gaurav Srivastava, Aafiya Hussain, Sriram Srinivasan, Xuan Wang},
-  title = {LLMThinkBench: Advanced Reasoning and Overthinking Evaluation Framework for LLMs},
-  year = {2025},
-  url = {https://github.com/ctrl-gaurav/LLMThinkBench/},
-  version = {0.1.6}
+@article{srivastava2025llmthinkbench,
+    title = {LLMThinkBench: Towards Basic Math Reasoning and Overthinking in Large Language Models},
+    author = {Gaurav Srivastava and Aafiya Hussain and Sriram Srinivasan and Xuan Wang},
+    year = {2025},
+    eprint = {2507.04023},
+    archivePrefix = {arXiv},
+    primaryClass = {cs.CL},
+    url = {https://arxiv.org/abs/2507.04023}
 }
 ```
 
