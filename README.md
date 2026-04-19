@@ -2,12 +2,14 @@
 
 <div align="center">
 
-[![PyPI version](https://img.shields.io/badge/pypi-v0.1.6-blue)](https://pypi.org/project/llmthinkbench/0.1.6/)
-[![Python](https://img.shields.io/badge/Python-3.12%2B-blue)](https://www.python.org/)
+[![PyPI version](https://img.shields.io/pypi/v/llmthinkbench.svg?color=blue)](https://pypi.org/project/llmthinkbench/)
+[![Downloads](https://static.pepy.tech/badge/llmthinkbench)](https://pepy.tech/project/llmthinkbench)
+[![Downloads/month](https://static.pepy.tech/badge/llmthinkbench/month)](https://pepy.tech/project/llmthinkbench)
+[![Python](https://img.shields.io/pypi/pyversions/llmthinkbench.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 [![vLLM](https://img.shields.io/badge/Powered%20by-vLLM-orange)](https://github.com/vllm-project/vllm)
 [![HuggingFace](https://img.shields.io/badge/HuggingFace-Compatible-yellow)](https://huggingface.co/)
-[![Leaderboard](https://img.shields.io/badge/🏆-Live%20Leaderboard-gold)](https://ctrl-gaurav.github.io/llmthinkbench.github.io/)
+[![Leaderboard](https://img.shields.io/badge/🏆-Live%20Leaderboard-gold)](https://ctrl-gaurav.github.io/LLMThinkBench/)
 
 ![LLMThinkBench Banner](https://img.shields.io/badge/🧠%20LLMThinkBench-Advanced%20Reasoning%20%26%20Overthinking%20Detection-blueviolet?style=for-the-badge&logo=brain&logoColor=white)
 
@@ -21,9 +23,9 @@ LLMThinkBench is a comprehensive framework designed to rigorously evaluate the b
 
 <div align="center">
 
-### **[🔥 View Real-Time Model Rankings →](https://ctrl-gaurav.github.io/llmthinkbench.github.io/)**
+### **[🔥 View Real-Time Model Rankings →](https://ctrl-gaurav.github.io/LLMThinkBench/)**
 
-[![LLMThinkBench Leaderboard](https://img.shields.io/badge/📊%20Live%20Leaderboard-Real--time%20Rankings%20•%20Overthinking%20Metrics%20•%20Performance%20Analysis-000428?style=for-the-badge)](https://ctrl-gaurav.github.io/llmthinkbench.github.io/)
+[![LLMThinkBench Leaderboard](https://img.shields.io/badge/📊%20Live%20Leaderboard-Real--time%20Rankings%20•%20Overthinking%20Metrics%20•%20Performance%20Analysis-000428?style=for-the-badge)](https://ctrl-gaurav.github.io/LLMThinkBench/)
 
 **🥇 Top Performers:**
 | Rank | Model | Accuracy | Efficiency | Instruction Following |

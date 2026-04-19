@@ -1,0 +1,3091 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLMThinkBench - Evaluating Math Reasoning & Overthinking in LLMs</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --dark-bg: #0f0f23;
+            --card-bg: #1a1a2e;
+            --text-light: #e4e4e7;
+            --text-dark: #71717a;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --gold: #ffd700;
+            --silver: #c0c0c0;
+            --bronze: #cd7f32;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Enhanced Animated Background */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #1a1a3e 50%, #0f0f23 100%);
+            overflow: hidden;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 300%;
+            height: 300%;
+            top: -100%;
+            left: -100%;
+            background: radial-gradient(circle at 30% 70%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(240, 147, 251, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.08) 0%, transparent 50%);
+            animation: rotate 60s linear infinite;
+        }
+
+        .bg-animation::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="g" cx="50%" cy="50%" r="50%"><stop offset="0%" style="stop-color:rgba(102,126,234,0.3);stop-opacity:1" /><stop offset="100%" style="stop-color:rgba(102,126,234,0);stop-opacity:0" /></radialGradient></defs><circle cx="25" cy="25" r="2" fill="url(%23g)"><animate attributeName="cy" values="25;75;25" dur="3s" repeatCount="indefinite"/></circle><circle cx="75" cy="75" r="1.5" fill="url(%23g)"><animate attributeName="cx" values="75;25;75" dur="4s" repeatCount="indefinite"/></circle><circle cx="50" cy="50" r="1" fill="url(%23g)"><animate attributeName="r" values="1;3;1" dur="2s" repeatCount="indefinite"/></circle></svg>') repeat;
+            opacity: 0.4;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px) scale(1);
+            }
+
+            50% {
+                transform: translateY(-20px) scale(1.1);
+            }
+        }
+
+        /* Particle System */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(102, 126, 234, 0.6);
+            border-radius: 50%;
+            animation: particle-float 15s infinite linear;
+        }
+
+        @keyframes particle-float {
+            0% {
+                transform: translateY(100vh) translateX(-50px);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100px) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        .slide-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        .slide-in-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Header */
+        header {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 4rem 2rem;
+            text-align: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 0rem;
+        }
+
+        .badge {
+            background: rgba(102, 126, 234, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid var(--primary-color);
+            color: var(--text-light);
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .badge:hover {
+            background: rgba(102, 126, 234, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Top Models Section */
+        .top-models {
+            max-width: 1400px;
+            margin: 0 auto 4rem;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .winners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .winner-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+            transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .winner-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--primary-color);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.4);
+        }
+
+        .winner-card:hover::before {
+            opacity: 1;
+        }
+
+        .winner-card:hover .trophy {
+            transform: scale(1.1) rotate(5deg);
+            filter: drop-shadow(0 0 20px currentColor);
+        }
+
+        .winner-card:hover .winner-metric {
+            transform: scale(1.05);
+        }
+
+        .winner-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+
+        .trophy {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            display: inline-block;
+        }
+
+        .gold-trophy {
+            color: var(--gold);
+        }
+
+        .silver-trophy {
+            color: var(--silver);
+        }
+
+        .bronze-trophy {
+            color: var(--bronze);
+        }
+
+        .winner-title {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .winner-model {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .winner-metric {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            display: inline-block;
+        }
+
+        /* Search and Filters */
+        .controls {
+            max-width: 1400px;
+            margin: 1rem auto 2rem;
+            padding: 0 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            background: var(--card-bg);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            color: var(--text-light);
+            font-size: 1rem;
+            transition: all 0.3s;
+            height: 56px;
+            box-sizing: border-box;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-dark);
+        }
+
+        .sort-select {
+            padding: 1rem;
+            background: var(--card-bg);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            color: var(--text-light);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            height: 56px;
+            box-sizing: border-box;
+            min-width: 220px;
+        }
+
+        .sort-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Table */
+        .table-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        thead {
+            background: rgba(102, 126, 234, 0.2);
+        }
+
+        th {
+            padding: 1.2rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--primary-color);
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+        }
+
+        th:hover {
+            background: rgba(102, 126, 234, 0.3);
+        }
+
+        th i {
+            margin-left: 0.5rem;
+            font-size: 0.8rem;
+            opacity: 0.5;
+        }
+
+        td {
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        tr:hover {
+            background: rgba(102, 126, 234, 0.15);
+            transform: scale(1.01);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.2);
+        }
+
+        tbody tr {
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        tbody tr:hover td {
+            color: var(--text-light);
+        }
+
+        .rank {
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .rank-1 {
+            color: var(--gold);
+        }
+
+        .rank-2 {
+            color: var(--silver);
+        }
+
+        .rank-3 {
+            color: var(--bronze);
+        }
+
+        .model-name {
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .metric-good {
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        .metric-medium {
+            color: var(--warning-color);
+            font-weight: 600;
+        }
+
+        .metric-bad {
+            color: var(--danger-color);
+            font-weight: 600;
+        }
+
+        /* Charts Section */
+        .charts-section {
+            max-width: 1400px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 2rem;
+        }
+
+        .chart-container {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            height: 400px;
+            position: relative;
+        }
+
+        .chart-container canvas {
+            max-height: 350px !important;
+        }
+
+        .chart-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--card-bg);
+            padding: 3rem 0;
+            margin-top: 6rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .citation {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid var(--primary-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            font-family: monospace;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Floating Action Menu */
+        .fab-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .fab {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fab:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6);
+        }
+
+        .fab-menu {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        .fab-menu.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .fab-mini {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 2px solid var(--primary-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .fab-mini:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .fab-tooltip {
+            position: absolute;
+            right: 60px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--card-bg);
+            color: var(--text-light);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid var(--primary-color);
+        }
+
+        .fab-mini:hover .fab-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            transform: scale(0.8) translateY(50px);
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger-color);
+        }
+
+        /* Advanced Filter Panel */
+        .filter-panel {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 3rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .filter-panel:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.2);
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+        }
+
+        .range-slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Compare Panel */
+        .compare-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            border-top: 2px solid var(--primary-color);
+            padding: 1rem;
+            transform: translateY(100%);
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            z-index: 1500;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .compare-panel.active {
+            transform: translateY(0);
+        }
+
+        .compare-items {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding: 0.5rem 0;
+        }
+
+        .compare-item {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid var(--primary-color);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 200px;
+        }
+
+        .compare-remove {
+            background: none;
+            border: none;
+            color: var(--danger-color);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .compare-remove:hover {
+            transform: scale(1.2);
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Enhanced Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            height: 56px;
+            box-sizing: border-box;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--card-bg);
+            color: var(--text-light);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .hero h2 {
+                font-size: 2rem;
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .table-container {
+                padding: 0 1rem;
+            }
+
+            th,
+            td {
+                padding: 0.8rem 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            .fab-container {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                max-width: 95vw;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-animation"></div>
+    <div class="particles" id="particles"></div>
+
+    <header class="fade-in">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">🧠</span>
+                <h1>LLMThinkBench</h1>
+            </div>
+            <nav class="nav-links">
+                <a href="https://github.com/ctrl-gaurav/LLMThinkBench" target="_blank">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+                <a href="https://pypi.org/project/llmthinkbench/" target="_blank">
+                    <i class="fab fa-python"></i> PyPI
+                </a>
+                <a href="#citation">
+                    <i class="fas fa-quote-right"></i> Cite
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero fade-in">
+        <h2>Evaluating Math Reasoning & Overthinking in LLMs</h2>
+        <p>LLMThinkBench is a comprehensive framework designed to rigorously evaluate the basic math reasoning
+            capabilities of Language Models, while identifying instances of overthinking—where models apply
+            unnecessarily complex logic to simple problems.</p>
+
+        <div class="badges">
+            <a href="https://pypi.org/project/llmthinkbench/" target="_blank" class="badge"
+                style="text-decoration: none;">
+                <i class="fab fa-python"></i> PyPI v0.1.6
+            </a>
+            <a href="https://github.com/ctrl-gaurav/LLMThinkBench" target="_blank" class="badge"
+                style="text-decoration: none;">
+                <i class="fab fa-github"></i> GitHub
+            </a>
+            <a href="https://www.arxiv.org/abs/2507.04023" target="_blank" class="badge" style="text-decoration: none;">
+                <i class="fas fa-scroll"></i> Preprint (arXiv)
+            </a>
+        </div>
+    </section>
+
+    <section class="top-models slide-in-left">
+        <h2 class="section-title">🏆 Category Winners</h2>
+        <div class="winners-grid">
+            <div class="winner-card fade-in">
+                <div class="trophy gold-trophy">🥇</div>
+                <div class="winner-title">Best Overall Accuracy</div>
+                <div class="winner-model" id="best-accuracy-model">Loading...</div>
+                <div class="winner-metric" id="best-accuracy-value">--</div>
+            </div>
+            <div class="winner-card fade-in">
+                <div class="trophy silver-trophy">🥈</div>
+                <div class="winner-title">Least Overthinking Model</div>
+                <div class="winner-model" id="best-efficiency-model">Loading...</div>
+                <div class="winner-metric" id="best-efficiency-value">--</div>
+            </div>
+            <div class="winner-card fade-in">
+                <div class="trophy bronze-trophy">🥉</div>
+                <div class="winner-title">Best Instruction Following</div>
+                <div class="winner-model" id="best-instruction-model">Loading...</div>
+                <div class="winner-metric" id="best-instruction-value">--</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advanced Filter Panel -->
+    <section class="filter-panel fade-in" style="max-width: 1400px; margin: 0 auto; padding: 0 2rem;">
+        <h3 style="color: var(--primary-color); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+            <i class="fas fa-filter"></i> Advanced Filters
+            <button class="btn btn-secondary" onclick="resetFilters()"
+                style="margin-left: auto; padding: 0.5rem 1rem; font-size: 0.9rem;">
+                <i class="fas fa-redo"></i> Reset
+            </button>
+        </h3>
+        <div class="filter-grid">
+            <div class="filter-group">
+                <label class="filter-label">Accuracy Range (%)</label>
+                <input type="range" class="range-slider" id="accuracyMin" min="0" max="100" value="0">
+                <input type="range" class="range-slider" id="accuracyMax" min="0" max="100" value="100">
+                <span id="accuracyRange" style="font-size: 0.8rem; color: var(--text-dark);">0% - 100%</span>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Model Family</label>
+                <select id="familyFilter"
+                    style="padding: 0.5rem; border-radius: 8px; background: rgba(255,255,255,0.1); border: 1px solid var(--primary-color); color: var(--text-light);">
+                    <option value="">All Families</option>
+                    <option value="Qwen">Qwen</option>
+                    <option value="Phi">Microsoft Phi</option>
+                    <option value="Llama">Meta Llama</option>
+                    <option value="Mistral">Mistral</option>
+                    <option value="SmolLM">SmolLM</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Parameter Size</label>
+                <select id="sizeFilter"
+                    style="padding: 0.5rem; border-radius: 8px; background: rgba(255,255,255,0.1); border: 1px solid var(--primary-color); color: var(--text-light);">
+                    <option value="">All Sizes</option>
+                    <option value="small">Small (< 3B)</option>
+                    <option value="medium">Medium (3B - 10B)</option>
+                    <option value="large">Large (> 10B)</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Efficiency Threshold</label>
+                <input type="range" class="range-slider" id="efficiencyFilter" min="0" max="1" step="0.01" value="0">
+                <span id="efficiencyValue" style="font-size: 0.8rem; color: var(--text-dark);">0.000</span>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Quantization Type</label>
+                <select id="quantizationFilter"
+                    style="padding: 0.5rem; border-radius: 8px; background: rgba(255,255,255,0.1); border: 1px solid var(--primary-color); color: var(--text-light);">
+                    <option value="">All Models</option>
+                    <option value="normal">Normal Models Only</option>
+                    <option value="quantized">Quantized Models Only</option>
+                    <option value="GPTQ-8-Bit">GPTQ 8-Bit</option>
+                    <option value="GPTQ-4-Bit">GPTQ 4-Bit</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <section class="controls slide-in-right">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Search models... (Try 'Qwen', 'Phi', etc.)">
+        </div>
+        <select class="sort-select" id="sortSelect">
+            <option value="rank">Sort by Rank</option>
+            <option value="accuracy" selected>Sort by Accuracy</option>
+            <option value="efficiency">Sort by Efficiency</option>
+            <option value="instruction">Sort by Instruction Following</option>
+            <option value="overthinking">Sort by Overthinking Ratio</option>
+            <option value="tokens">Sort by Tokens (Low to High)</option>
+            <option value="words">Sort by Words (Low to High)</option>
+            <option value="chars">Sort by Chars (Low to High)</option>
+            <option value="params">Sort by Parameters</option>
+        </select>
+        <button class="btn btn-primary" onclick="openComparisonModal()">
+            <i class="fas fa-chart-line"></i> Compare Models
+        </button>
+    </section>
+
+    <section class="table-container fade-in">
+        <table id="leaderboardTable">
+            <thead>
+                <tr>
+                    <th onclick="sortTable('rank')">Rank <i class="fas fa-sort"></i></th>
+                    <th onclick="sortTable('model')">Model <i class="fas fa-sort"></i></th>
+                    <th onclick="sortTable('params')">Parameters <i class="fas fa-sort"></i></th>
+                    <th onclick="sortTable('accuracy')">Accuracy <i class="fas fa-sort"></i></th>
+                    <th onclick="sortTable('efficiency')">Efficiency Score <i class="fas fa-sort"></i></th>
+                    <th onclick="sortTable('instruction')">Instruction Following <i class="fas fa-sort"></i></th>
+                    <th onclick="sortTable('overthinking')">Overthinking Ratio <i class="fas fa-sort"></i></th>
+                    <th onclick="sortTable('tokens')">Avg Tokens <i class="fas fa-sort"></i></th>
+                    <th onclick="sortTable('words')">Avg Words <i class="fas fa-sort"></i></th>
+                    <th onclick="sortTable('chars')">Avg Chars <i class="fas fa-sort"></i></th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Table rows will be inserted here -->
+            </tbody>
+        </table>
+    </section>
+
+    <section class="charts-section slide-in-left">
+        <h2 class="section-title">📊 Performance Insights</h2>
+        <div class="charts-grid">
+            <div class="chart-container fade-in">
+                <h3 class="chart-title">Accuracy vs Efficiency Trade-off</h3>
+                <canvas id="efficiencyChart"></canvas>
+            </div>
+            <div class="chart-container fade-in">
+                <h3 class="chart-title">Model Size vs Performance</h3>
+                <canvas id="sizeChart"></canvas>
+            </div>
+            <div class="chart-container fade-in">
+                <h3 class="chart-title">Overthinking vs Accuracy</h3>
+                <canvas id="overthinkingChart"></canvas>
+            </div>
+            <div class="chart-container fade-in">
+                <h3 class="chart-title">Token Efficiency by Model Size</h3>
+                <canvas id="tokenEfficiencyChart"></canvas>
+            </div>
+            <div class="chart-container fade-in">
+                <h3 class="chart-title">Instruction Following vs Accuracy</h3>
+                <canvas id="instructionChart"></canvas>
+            </div>
+            <div class="chart-container fade-in">
+                <h3 class="chart-title">Top 20 Models Performance Trends</h3>
+                <canvas id="distributionChart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating Action Menu -->
+    <div class="fab-container">
+        <div class="fab-menu" id="fabMenu">
+            <div class="fab-mini" onclick="exportData()">
+                <i class="fas fa-download"></i>
+                <div class="fab-tooltip">Export Data</div>
+            </div>
+            <div class="fab-mini" onclick="openComparisonModal()">
+                <i class="fas fa-chart-bar"></i>
+                <div class="fab-tooltip">Compare Models</div>
+            </div>
+            <div class="fab-mini" onclick="toggleFilters()">
+                <i class="fas fa-filter"></i>
+                <div class="fab-tooltip">Advanced Filters</div>
+            </div>
+            <div class="fab-mini" onclick="scrollToTop()">
+                <i class="fas fa-arrow-up"></i>
+                <div class="fab-tooltip">Back to Top</div>
+            </div>
+        </div>
+        <button class="fab" onclick="toggleFabMenu()" id="fabButton">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+
+    <!-- Comparison Panel -->
+    <div class="compare-panel" id="comparePanel">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="color: var(--primary-color); margin: 0;">Selected Models for Comparison</h3>
+            <div>
+                <button class="btn btn-primary" onclick="openComparisonModal()" style="margin-right: 0.5rem;">
+                    <i class="fas fa-eye"></i> View Comparison
+                </button>
+                <button class="btn btn-secondary" onclick="clearComparison()">
+                    <i class="fas fa-times"></i> Clear All
+                </button>
+            </div>
+        </div>
+        <div class="compare-items" id="compareItems">
+            <!-- Selected models will appear here -->
+        </div>
+    </div>
+
+    <!-- Comparison Modal -->
+    <div class="modal" id="comparisonModal">
+        <div class="modal-content" style="max-width: 1200px;">
+            <button class="modal-close" onclick="closeComparisonModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 style="color: var(--primary-color); margin-bottom: 2rem;">Model Comparison</h2>
+            <div id="comparisonContent">
+                <!-- Comparison content will be generated here -->
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <h3>Citation</h3>
+            <div class="citation" id="citation">
+                @article{srivastava2025llmthinkbench,
+                title = {LLMThinkBench: Towards Basic Math Reasoning and Overthinking in Large Language Models},
+                author = {Gaurav Srivastava and Aafiya Hussain and Sriram Srinivasan and Xuan Wang},
+                year = {2025},
+                eprint = {2507.04023},
+                archivePrefix = {arXiv},
+                primaryClass = {cs.CL},
+                url = {https://arxiv.org/abs/2507.04023}
+                }
+
+            </div>
+            <div class="footer-links">
+                <a href="https://github.com/ctrl-gaurav/LLMThinkBench" target="_blank">
+                    <i class="fab fa-github"></i> GitHub Repository
+                </a>
+                <a href="https://pypi.org/project/llmthinkbench/" target="_blank">
+                    <i class="fab fa-python"></i> Install via PyPI
+                </a>
+                <a href="https://github.com/ctrl-gaurav/LLMThinkBench/issues" target="_blank">
+                    <i class="fas fa-bug"></i> Report Issues
+                </a>
+            </div>
+            <p style="margin-top: 2rem; color: var(--text-dark);">
+                © 2025 LLMThinkBench. Licensed under MIT.
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script>
+        // ===== EASY MODEL CONFIGURATION =====
+        // To add new models, simply add them to this array
+        // Rankings and winners will be calculated automatically
+        const modelData = [
+            // Qwen3 Series
+            {
+                model: "Qwen/Qwen3-0.6B",
+                params: "0.6B",
+                quantization: "None",
+                accuracy: 49.99,
+                instruction: 83.85,
+                tokens: 3162.8,
+                efficiency: 0.484,
+                overthinking: 44636.6,
+                words: 1620.9,
+                chars: 8301.8
+            },
+            {
+                model: "Qwen/Qwen3-1.7B",
+                params: "1.7B",
+                quantization: "None",
+                accuracy: 70.24,
+                instruction: 86.54,
+                tokens: 3157.2,
+                efficiency: 0.555,
+                overthinking: 31072.7,
+                words: 1620.7,
+                chars: 8445.9
+            },
+            {
+                model: "Qwen/Qwen3-4B",
+                params: "4B",
+                quantization: "None",
+                accuracy: 81.90,
+                instruction: 91.57,
+                tokens: 3091.2,
+                efficiency: 0.58,
+                overthinking: 17399.7,
+                words: 1623.1,
+                chars: 8489.9
+            },
+            {
+                model: "Qwen/Qwen3-8B",
+                params: "8B",
+                quantization: "None",
+                accuracy: 82.10,
+                instruction: 91.58,
+                tokens: 3027.8,
+                efficiency: 0.615,
+                overthinking: 23616,
+                words: 1584.6,
+                chars: 8260.3
+            },
+            {
+                model: "Qwen/Qwen3-14B",
+                params: "14B",
+                quantization: "None",
+                accuracy: 86.52,
+                instruction: 99.27,
+                tokens: 3607.6,
+                efficiency: 0.725,
+                overthinking: 8139.6,
+                words: 1941.2,
+                chars: 10556.1
+            },
+            {
+                model: "Qwen/Qwen3-32B",
+                params: "32B",
+                quantization: "None",
+                accuracy: 84.13,
+                instruction: 93.05,
+                tokens: 2845.9,
+                efficiency: 0.627,
+                overthinking: 10680.3,
+                words: 1497.5,
+                chars: 7790.1
+            },
+
+            // Microsoft Phi-4 Series
+            {
+                model: "microsoft/phi-4",
+                params: "14B",
+                quantization: "None",
+                accuracy: 78.92,
+                instruction: 97.46,
+                tokens: 378.6,
+                efficiency: 0.593,
+                overthinking: 1982.5,
+                words: 194.6,
+                chars: 989.9
+            },
+            {
+                model: "microsoft/Phi-4-mini-instruct",
+                params: "3.8B",
+                quantization: "None",
+                accuracy: 54.55,
+                instruction: 95.02,
+                tokens: 292.1,
+                efficiency: 0.567,
+                overthinking: 3017.4,
+                words: 146.6,
+                chars: 684.9
+            },
+            {
+                model: "microsoft/Phi-4-reasoning-plus",
+                params: "14B",
+                quantization: "None",
+                accuracy: 69.54,
+                instruction: 88.89,
+                tokens: 6780.7,
+                efficiency: 0.288,
+                overthinking: 132979,
+                words: 3972,
+                chars: 23893
+            },
+            {
+                model: "microsoft/Phi-4-reasoning",
+                params: "14B",
+                quantization: "None",
+                accuracy: 72.23,
+                instruction: 96.21,
+                tokens: 6066.2,
+                efficiency: 0.352,
+                overthinking: 105156.7,
+                words: 3710.8,
+                chars: 23866.8
+            },
+            {
+                model: "microsoft/Phi-4-mini-reasoning",
+                params: "3.8B",
+                quantization: "None",
+                accuracy: 70.16,
+                instruction: 89.56,
+                tokens: 3171.9,
+                efficiency: 0.659,
+                overthinking: 33533.3,
+                words: 1571.7,
+                chars: 8450.5
+            },
+            {
+                model: "microsoft/Phi-3-mini-128k-instruct",
+                params: "3.8B",
+                quantization: "None",
+                accuracy: 35.82,
+                instruction: 96.58,
+                tokens: 89.4,
+                efficiency: 0.413,
+                overthinking: 1156.9,
+                words: 40.6,
+                chars: 208.9
+            },
+            {
+                model: "microsoft/Phi-3-medium-4k-instruct",
+                params: "14B",
+                quantization: "None",
+                accuracy: 43.47,
+                instruction: 89.87,
+                tokens: 189.3,
+                efficiency: 0.378,
+                overthinking: 3134.7,
+                words: 109.6,
+                chars: 553.6
+            },
+            {
+                model: "microsoft/Phi-3-medium-128k-instruct",
+                params: "14B",
+                quantization: "None",
+                accuracy: 40.76,
+                instruction: 96.26,
+                tokens: 140.0,
+                efficiency: 0.390,
+                overthinking: 1188.4,
+                words: 74.8,
+                chars: 367.3
+            },
+
+            // Meta LLaMA Series
+            {
+                model: "meta-llama/Llama-3.2-1B-Instruct",
+                params: "1B",
+                quantization: "None",
+                accuracy: 16.25,
+                instruction: 47.15,
+                tokens: 336.3,
+                efficiency: 0.223,
+                overthinking: 6659.1,
+                words: 159.0,
+                chars: 756.9
+            },
+            {
+                model: "meta-llama/Llama-3.2-3B-Instruct",
+                params: "3B",
+                quantization: "None",
+                accuracy: 42.54,
+                instruction: 89.88,
+                tokens: 279.7,
+                efficiency: 0.490,
+                overthinking: 4737.8,
+                words: 144.6,
+                chars: 694.7
+            },
+            {
+                model: "meta-llama/Llama-3.1-8B-Instruct",
+                params: "8B",
+                quantization: "None",
+                accuracy: 48.84,
+                instruction: 85.66,
+                tokens: 366.4,
+                efficiency: 0.516,
+                overthinking: 5667.7,
+                words: 203.4,
+                chars: 977.7
+            },
+            {
+                model: "meta-llama/Llama-3.1-70B-Instruct",
+                params: "70B",
+                quantization: "None",
+                accuracy: 75.43,
+                instruction: 98.12,
+                tokens: 251.2,
+                efficiency: 0.691,
+                overthinking: 4519.7,
+                words: 135.5,
+                chars: 654.6
+            },
+            {
+                model: "meta-llama/Llama-3.3-70B-Instruct",
+                params: "70B",
+                quantization: "None",
+                accuracy: 74.59,
+                instruction: 97.40,
+                tokens: 312.8,
+                efficiency: 0.654,
+                overthinking: 1641.0,
+                words: 174.1,
+                chars: 859.7
+            },
+
+            // Qwen2.5 Series (Base Models)
+            {
+                model: "Qwen/Qwen2.5-0.5B-Instruct",
+                params: "0.5B",
+                quantization: "None",
+                accuracy: 21.31,
+                instruction: 77.57,
+                tokens: 432.3,
+                efficiency: 0.268,
+                overthinking: 12885.7,
+                words: 223.2,
+                chars: 1144.5
+            },
+            {
+                model: "Qwen/Qwen2.5-1.5B-Instruct",
+                params: "1.5B",
+                quantization: "None",
+                accuracy: 43.03,
+                instruction: 85.45,
+                tokens: 264.7,
+                efficiency: 0.470,
+                overthinking: 3348.5,
+                words: 134.1,
+                chars: 626.7
+            },
+            {
+                model: "Qwen/Qwen2.5-3B-Instruct",
+                params: "3B",
+                quantization: "None",
+                accuracy: 45.75,
+                instruction: 92.35,
+                tokens: 331.3,
+                efficiency: 0.463,
+                overthinking: 2811.3,
+                words: 176.5,
+                chars: 861.4
+            },
+            {
+                model: "Qwen/Qwen2.5-7B-Instruct",
+                params: "7B",
+                quantization: "None",
+                accuracy: 61.36,
+                instruction: 96.47,
+                tokens: 286.9,
+                efficiency: 0.568,
+                overthinking: 6106.2,
+                words: 149.5,
+                chars: 747.2
+            },
+            {
+                model: "Qwen/Qwen2.5-14B-Instruct",
+                params: "14B",
+                quantization: "None",
+                accuracy: 63.74,
+                instruction: 97.83,
+                tokens: 260.2,
+                efficiency: 0.578,
+                overthinking: 1835.9,
+                words: 137.1,
+                chars: 685.7
+            },
+            {
+                model: "Qwen/Qwen2.5-32B-Instruct",
+                params: "32B",
+                quantization: "None",
+                accuracy: 72.90,
+                instruction: 99.26,
+                tokens: 260.9,
+                efficiency: 0.643,
+                overthinking: 1425.9,
+                words: 139.1,
+                chars: 673.6
+            },
+
+            // Other Models
+            {
+                model: "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+                params: "1.7B",
+                quantization: "None",
+                accuracy: 16.69,
+                instruction: 68.98,
+                tokens: 213.0,
+                efficiency: 0.217,
+                overthinking: 10923.8,
+                words: 93.5,
+                chars: 481.5
+            },
+            {
+                model: "mistralai/Mistral-7B-Instruct-v0.3",
+                params: "7B",
+                quantization: "None",
+                accuracy: 27.66,
+                instruction: 96.26,
+                tokens: 207.1,
+                efficiency: 0.289,
+                overthinking: 4812.8,
+                words: 113.7,
+                chars: 585.9
+            },
+            {
+                model: "mistralai/Mistral-Nemo-Instruct-2407",
+                params: "12B",
+                quantization: "None",
+                accuracy: 35.43,
+                instruction: 82.95,
+                tokens: 377.0,
+                efficiency: 0.356,
+                overthinking: 14208.7,
+                words: 234.2,
+                chars: 1123.7
+            },
+
+            // Qwen2.5 Math Series
+            {
+                model: "Qwen/Qwen2.5-Math-1.5B-Instruct",
+                params: "1.5B",
+                quantization: "None",
+                accuracy: 51.43,
+                instruction: 94.04,
+                tokens: 397.1,
+                efficiency: 0.488,
+                overthinking: 5465.9,
+                words: 210.0,
+                chars: 1076.9
+            },
+            {
+                model: "Qwen/Qwen2.5-Math-7B-Instruct",
+                params: "7B",
+                quantization: "None",
+                accuracy: 60.68,
+                instruction: 94.36,
+                tokens: 411.7,
+                efficiency: 0.538,
+                overthinking: 3741.4,
+                words: 221.5,
+                chars: 1156.0
+            },
+
+            // Qwen2.5 Quantized Models (GPTQ-8-Bit)
+            {
+                model: "Qwen/Qwen2.5-0.5B-Instruct-GPTQ-Int8",
+                params: "0.5B",
+                quantization: "GPTQ-8-Bit",
+                accuracy: 21.29,
+                instruction: 76.79,
+                tokens: 431.5,
+                efficiency: 0.268,
+                overthinking: 5694.5,
+                words: 223.3,
+                chars: 1138.5
+            },
+            {
+                model: "Qwen/Qwen2.5-1.5B-Instruct-GPTQ-Int8",
+                params: "1.5B",
+                quantization: "GPTQ-8-Bit",
+                accuracy: 43.67,
+                instruction: 86.64,
+                tokens: 264.3,
+                efficiency: 0.472,
+                overthinking: 5268.4,
+                words: 133.7,
+                chars: 628.3
+            },
+            {
+                model: "Qwen/Qwen2.5-3B-Instruct-GPTQ-Int8",
+                params: "3B",
+                quantization: "GPTQ-8-Bit",
+                accuracy: 48.65,
+                instruction: 91.99,
+                tokens: 341.9,
+                efficiency: 0.497,
+                overthinking: 7244.8,
+                words: 181.7,
+                chars: 878.7
+            },
+            {
+                model: "Qwen/Qwen2.5-7B-Instruct-GPTQ-Int8",
+                params: "7B",
+                quantization: "GPTQ-8-Bit",
+                accuracy: 60.61,
+                instruction: 96.40,
+                tokens: 287.5,
+                efficiency: 0.564,
+                overthinking: 6121.5,
+                words: 149.4,
+                chars: 745.5
+            },
+            {
+                model: "Qwen/Qwen2.5-14B-Instruct-GPTQ-Int8",
+                params: "14B",
+                quantization: "GPTQ-8-Bit",
+                accuracy: 63.86,
+                instruction: 97.89,
+                tokens: 261.2,
+                efficiency: 0.576,
+                overthinking: 2070.4,
+                words: 138.1,
+                chars: 688.9
+            },
+            {
+                model: "Qwen/Qwen2.5-32B-Instruct-GPTQ-Int8",
+                params: "32B",
+                quantization: "GPTQ-8-Bit",
+                accuracy: 73.08,
+                instruction: 99.20,
+                tokens: 261.9,
+                efficiency: 0.645,
+                overthinking: 1254.2,
+                words: 139.6,
+                chars: 675.7
+            },
+            {
+                model: "Qwen/Qwen2.5-72B-Instruct-GPTQ-Int8",
+                params: "72B",
+                quantization: "GPTQ-8-Bit",
+                accuracy: 74.05,
+                instruction: 96.28,
+                tokens: 347.1,
+                efficiency: 0.577,
+                overthinking: 3424.8,
+                words: 184.2,
+                chars: 901.5
+            },
+
+            // Qwen2.5 Quantized Models (GPTQ-4-Bit)
+            {
+                model: "Qwen/Qwen2.5-0.5B-Instruct-GPTQ-Int4",
+                params: "0.5B",
+                quantization: "GPTQ-4-Bit",
+                accuracy: 12.77,
+                instruction: 77.70,
+                tokens: 478.0,
+                efficiency: 0.176,
+                overthinking: 22014.7,
+                words: 260.9,
+                chars: 1342.5
+            },
+            {
+                model: "Qwen/Qwen2.5-1.5B-Instruct-GPTQ-Int4",
+                params: "1.5B",
+                quantization: "GPTQ-4-Bit",
+                accuracy: 39.42,
+                instruction: 82.97,
+                tokens: 292.1,
+                efficiency: 0.434,
+                overthinking: 6973.2,
+                words: 142.3,
+                chars: 685.0
+            },
+            {
+                model: "Qwen/Qwen2.5-3B-Instruct-GPTQ-Int4",
+                params: "3B",
+                quantization: "GPTQ-4-Bit",
+                accuracy: 41.94,
+                instruction: 90.97,
+                tokens: 301.0,
+                efficiency: 0.438,
+                overthinking: 9158.4,
+                words: 158.8,
+                chars: 753.3
+            },
+            {
+                model: "Qwen/Qwen2.5-7B-Instruct-GPTQ-Int4",
+                params: "7B",
+                quantization: "GPTQ-4-Bit",
+                accuracy: 58.03,
+                instruction: 96.00,
+                tokens: 291.9,
+                efficiency: 0.550,
+                overthinking: 3961.6,
+                words: 152.2,
+                chars: 758.9
+            },
+            {
+                model: "Qwen/Qwen2.5-14B-Instruct-GPTQ-Int4",
+                params: "14B",
+                quantization: "GPTQ-4-Bit",
+                accuracy: 60.94,
+                instruction: 96.69,
+                tokens: 240.9,
+                efficiency: 0.586,
+                overthinking: 2501.9,
+                words: 127.5,
+                chars: 632.8
+            },
+            {
+                model: "Qwen/Qwen2.5-32B-Instruct-GPTQ-Int4",
+                params: "32B",
+                quantization: "GPTQ-4-Bit",
+                accuracy: 72.67,
+                instruction: 99.37,
+                tokens: 260.5,
+                efficiency: 0.640,
+                overthinking: 1430.9,
+                words: 139.2,
+                chars: 663.7
+            },
+            {
+                model: "Qwen/Qwen2.5-32B-Instruct-GPTQ-Int4",
+                params: "32B",
+                quantization: "GPTQ-4-Bit",
+                accuracy: 72.67,
+                instruction: 99.37,
+                tokens: 260.5,
+                efficiency: 0.640,
+                overthinking: 1430.9,
+                words: 139.2,
+                chars: 663.7
+            },
+            {
+                model: "Qwen/Qwen2.5-72B-Instruct-GPTQ-Int8",
+                params: "72B",
+                quantization: "GPTQ-8-Bit",
+                accuracy: 74.05,
+                instruction: 96.28,
+                tokens: 347.1,
+                efficiency: 0.577,
+                overthinking: 3424.8,
+                words: 184.2,
+                chars: 901.5
+            },
+            {
+                model: "Qwen/Qwen2.5-72B-Instruct-GPTQ-Int4",
+                params: "72B",
+                quantization: "GPTQ-4-Bit",
+                accuracy: 72.74,
+                instruction: 94.85,
+                tokens: 358.3,
+                efficiency: 0.549,
+                overthinking: 2606.3,
+                words: 188.4,
+                chars: 919.8
+            },
+            {
+                model: "GPT-4.1",
+                params: "--",
+                accuracy: 89.88,
+                instruction: 97.79,
+                tokens: 338.8,
+                efficiency: 0.752,
+                overthinking: 801.3,
+                words: 152.2,
+                chars: 759.5
+            },
+            {
+                model: "GPT-4.1-mini",
+                params: "--",
+                accuracy: 90.23,
+                instruction: 98.14,
+                tokens: 328.8,
+                efficiency: 0.768,
+                overthinking: 830.4,
+                words: 145.1,
+                chars: 740.7
+            },
+            {
+                model: "GPT-4.1-nano",
+                params: "--",
+                accuracy: 75.35,
+                instruction: 95.58,
+                tokens: 338.8,
+                efficiency: 0.713,
+                overthinking: 493.9,
+                words: 148.7,
+                chars: 760.3
+            },
+            {
+                model: "GPT-4o",
+                params: "--",
+                accuracy: 87.56,
+                instruction: 99.42,
+                tokens: 290.5,
+                efficiency: 0.737,
+                overthinking: 633.1,
+                words: 154.8,
+                chars: 749
+            },
+            {
+                model: "GPT-4o-mini",
+                params: "--",
+                accuracy: 75.00,
+                instruction: 97.67,
+                tokens: 341.3,
+                efficiency: 0.671,
+                overthinking: 936.3,
+                words: 172,
+                chars: 848.7
+            },
+            {
+                model: "gemini-2.0-flash-lite",
+                params: "--",
+                accuracy: 73.33,
+                instruction: 99.58,
+                tokens: 215.5,
+                efficiency: 0.613,
+                overthinking: 398.3,
+                words: 116.9,
+                chars: 523
+            },
+            {
+                model: "gemini-2.0-flash",
+                params: "--",
+                accuracy: 69.60,
+                instruction: 94.44,
+                tokens: 234.5,
+                efficiency: 0.608,
+                overthinking: 171.9,
+                words: 118.9,
+                chars: 517.9
+            },
+            {
+                model: "gemini-2.5-flash-lite-preview-06-17",
+                params: "--",
+                accuracy: 66.21,
+                instruction: 80.69,
+                tokens: 528.7,
+                efficiency: 0.431,
+                overthinking: 1144.3,
+                words: 285.8,
+                chars: 1482.2
+            },
+            {
+                model: "gemini-2.5-flash",
+                params: "--",
+                accuracy: 55.18,
+                instruction: 63.49,
+                tokens: 186.3,
+                efficiency: 0.312,
+                overthinking: 216.9,
+                words: 104.8,
+                chars: 539.5
+            }
+        ];
+
+        // Calculate ranks dynamically based on accuracy
+        function calculateRanks(data) {
+            // Sort by accuracy (descending) to determine ranks
+            const sorted = [...data].sort((a, b) => b.accuracy - a.accuracy);
+
+            // Assign ranks
+            sorted.forEach((model, index) => {
+                model.rank = index + 1;
+            });
+
+            // Return original array with ranks added
+            return data.map(model => {
+                const rankedModel = sorted.find(m => m.model === model.model);
+                return { ...model, rank: rankedModel.rank };
+            });
+        }
+
+        // Add ranks to model data
+        let rankedModelData = calculateRanks(modelData);
+
+        // Function to get color based on metric value
+        function getMetricClass(value, metric) {
+            switch (metric) {
+                case 'accuracy':
+                case 'instruction':
+                case 'efficiency':
+                    return value >= 70 ? 'metric-good' : value >= 40 ? 'metric-medium' : 'metric-bad';
+                case 'overthinking':
+                case 'tokens':
+                    return value <= 500 ? 'metric-good' : value <= 1000 ? 'metric-medium' : 'metric-bad';
+                case 'words':
+                    return value <= 200 ? 'metric-good' : value <= 400 ? 'metric-medium' : 'metric-bad';
+                case 'chars':
+                    return value <= 1000 ? 'metric-good' : value <= 2000 ? 'metric-medium' : 'metric-bad';
+                default:
+                    return '';
+            }
+        }
+
+        // Function to render table
+        function renderTable(data) {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+
+            // Use the data as provided (already sorted by caller)
+            const sortedData = data;
+
+            sortedData.forEach((model) => {
+                const row = document.createElement('tr');
+                const rankIcon = model.rank <= 3 ? ['🥇', '🥈', '🥉'][model.rank - 1] : '';
+
+                row.innerHTML = `
+                    <td>
+                        <span class="rank rank-${model.rank}">
+                            ${rankIcon} #${model.rank}
+                        </span>
+                    </td>
+                    <td class="model-name">${model.model}</td>
+                    <td>${model.params}</td>
+                    <td class="${getMetricClass(model.accuracy, 'accuracy')}">${model.accuracy.toFixed(2)}%</td>
+                    <td class="${getMetricClass(model.efficiency * 100, 'efficiency')}">${model.efficiency.toFixed(3)}</td>
+                    <td class="${getMetricClass(model.instruction, 'instruction')}">${model.instruction.toFixed(2)}%</td>
+                    <td class="${getMetricClass(model.overthinking, 'overthinking')}">${model.overthinking.toFixed(1)}</td>
+                    <td class="${getMetricClass(model.tokens, 'tokens')}">${model.tokens.toFixed(1)}</td>
+                    <td class="${getMetricClass(model.words, 'words')}">${model.words.toFixed(1)}</td>
+                    <td class="${getMetricClass(model.chars, 'chars')}">${model.chars.toFixed(1)}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Update top models dynamically
+        function updateTopModels() {
+            // Best Accuracy
+            const bestAccuracy = rankedModelData.reduce((a, b) => a.accuracy > b.accuracy ? a : b);
+            document.getElementById('best-accuracy-model').textContent = bestAccuracy.model;
+            document.getElementById('best-accuracy-value').textContent = `${bestAccuracy.accuracy.toFixed(2)}%`;
+
+            // Best Efficiency
+            const bestEfficiency = rankedModelData.reduce((a, b) => a.efficiency > b.efficiency ? a : b);
+            document.getElementById('best-efficiency-model').textContent = bestEfficiency.model;
+            document.getElementById('best-efficiency-value').textContent = bestEfficiency.efficiency.toFixed(3);
+
+            // Best Instruction Following
+            const bestInstruction = rankedModelData.reduce((a, b) => a.instruction > b.instruction ? a : b);
+            document.getElementById('best-instruction-model').textContent = bestInstruction.model;
+            document.getElementById('best-instruction-value').textContent = `${bestInstruction.instruction.toFixed(2)}%`;
+        }
+
+        // Sort functionality
+        let currentSort = { column: 'accuracy', order: 'desc' };
+
+        function sortTable(column) {
+            if (currentSort.column === column) {
+                currentSort.order = currentSort.order === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSort.column = column;
+                currentSort.order = column === 'overthinking' || column === 'tokens' || column === 'words' || column === 'chars' ? 'asc' : 'desc';
+            }
+
+            // Update dropdown to match current sort
+            document.getElementById('sortSelect').value = column;
+
+            const sortedData = [...rankedModelData].sort((a, b) => {
+                let aVal, bVal;
+                switch (column) {
+                    case 'model':
+                        aVal = a.model.toLowerCase();
+                        bVal = b.model.toLowerCase();
+                        break;
+                    case 'params':
+                        aVal = parseFloat(a.params.replace(/[^0-9.]/g, ''));
+                        bVal = parseFloat(b.params.replace(/[^0-9.]/g, ''));
+                        break;
+                    default:
+                        aVal = a[column];
+                        bVal = b[column];
+                }
+
+                if (currentSort.order === 'asc') {
+                    return aVal > bVal ? 1 : -1;
+                } else {
+                    return aVal < bVal ? 1 : -1;
+                }
+            });
+
+            renderTable(sortedData);
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function (e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredData = rankedModelData.filter(model =>
+                model.model.toLowerCase().includes(searchTerm)
+            );
+
+            // Apply current sorting to filtered data
+            const sortedData = [...filteredData].sort((a, b) => {
+                let aVal, bVal;
+                switch (currentSort.column) {
+                    case 'model':
+                        aVal = a.model.toLowerCase();
+                        bVal = b.model.toLowerCase();
+                        break;
+                    case 'params':
+                        aVal = parseFloat(a.params.replace(/[^0-9.]/g, ''));
+                        bVal = parseFloat(b.params.replace(/[^0-9.]/g, ''));
+                        break;
+                    default:
+                        aVal = a[currentSort.column];
+                        bVal = b[currentSort.column];
+                }
+
+                if (currentSort.order === 'asc') {
+                    return aVal > bVal ? 1 : -1;
+                } else {
+                    return aVal < bVal ? 1 : -1;
+                }
+            });
+
+            renderTable(sortedData);
+        });
+
+        // Sort select
+        document.getElementById('sortSelect').addEventListener('change', function (e) {
+            const column = e.target.value;
+            // Update current sort state
+            currentSort.column = column;
+            currentSort.order = column === 'overthinking' || column === 'tokens' || column === 'words' || column === 'chars' ? 'asc' : 'desc';
+
+            const sortedData = [...rankedModelData].sort((a, b) => {
+                let aVal, bVal;
+                switch (column) {
+                    case 'model':
+                        aVal = a.model.toLowerCase();
+                        bVal = b.model.toLowerCase();
+                        break;
+                    case 'params':
+                        aVal = parseFloat(a.params.replace(/[^0-9.]/g, ''));
+                        bVal = parseFloat(b.params.replace(/[^0-9.]/g, ''));
+                        break;
+                    default:
+                        aVal = a[column];
+                        bVal = b[column];
+                }
+
+                if (currentSort.order === 'asc') {
+                    return aVal > bVal ? 1 : -1;
+                } else {
+                    return aVal < bVal ? 1 : -1;
+                }
+            });
+
+            renderTable(sortedData);
+        });
+
+        // Initialize charts
+        function initCharts() {
+            // Set Chart.js defaults for dark theme
+            Chart.defaults.color = '#e4e4e7';
+
+            // Efficiency Chart
+            const effCanvas = document.getElementById('efficiencyChart');
+            const effCtx = effCanvas.getContext('2d');
+
+            new Chart(effCtx, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Models',
+                        data: rankedModelData.map(m => ({
+                            x: m.accuracy,
+                            y: m.efficiency * 100,
+                            label: m.model.split('/').pop()
+                        })),
+                        backgroundColor: 'rgba(102, 126, 234, 0.6)',
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        borderWidth: 2,
+                        pointRadius: 8,
+                        pointHoverRadius: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            bottom: 20
+                        }
+                    },
+                    interaction: {
+                        mode: 'point'
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    return `${context.raw.label}: ${context.parsed.x.toFixed(2)}% accuracy, ${context.parsed.y.toFixed(2)} efficiency`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Accuracy (%)'
+                            },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Efficiency Score (%)'
+                            },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        }
+                    }
+                }
+            });
+
+            // Size Chart - Original bar/line combo
+            const sizeCanvas = document.getElementById('sizeChart');
+            const sizeCtx = sizeCanvas.getContext('2d');
+
+            new Chart(sizeCtx, {
+                type: 'bar',
+                data: {
+                    labels: rankedModelData.slice(0, 15).map(m => m.model.split('/').pop()),
+                    datasets: [{
+                        label: 'Accuracy (%)',
+                        data: rankedModelData.slice(0, 15).map(m => m.accuracy),
+                        backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        borderWidth: 2,
+                        yAxisID: 'y-accuracy'
+                    }, {
+                        label: 'Parameters (B)',
+                        data: rankedModelData.slice(0, 15).map(m => parseFloat(m.params.replace(/[^0-9.]/g, ''))),
+                        backgroundColor: 'rgba(240, 147, 251, 0.8)',
+                        borderColor: 'rgba(240, 147, 251, 1)',
+                        borderWidth: 2,
+                        yAxisID: 'y-params',
+                        type: 'line',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            bottom: 20
+                        }
+                    },
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        'y-accuracy': {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Accuracy (%)'
+                            },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        'y-params': {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'Parameters (B)'
+                            },
+                            grid: { drawOnChartArea: false }
+                        }
+                    }
+                }
+            });
+
+            // Overthinking vs Accuracy Chart - Bubble Chart
+            const overthinkingCanvas = document.getElementById('overthinkingChart');
+            const overthinkingCtx = overthinkingCanvas.getContext('2d');
+
+            new Chart(overthinkingCtx, {
+                type: 'bubble',
+                data: {
+                    datasets: [{
+                        label: 'Models',
+                        data: rankedModelData.map(m => ({
+                            x: Math.log10(m.overthinking),
+                            y: m.accuracy,
+                            r: m.efficiency * 50, // Bubble size represents efficiency
+                            label: m.model.split('/').pop(),
+                            efficiency: m.efficiency,
+                            overthinking: m.overthinking
+                        })),
+                        backgroundColor: 'rgba(239, 68, 68, 0.4)',
+                        borderColor: 'rgba(239, 68, 68, 0.8)',
+                        borderWidth: 2,
+                        hoverBackgroundColor: 'rgba(239, 68, 68, 0.6)',
+                        hoverBorderColor: 'rgba(239, 68, 68, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            bottom: 20
+                        }
+                    },
+                    interaction: {
+                        mode: 'point'
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    return `${context.raw.label}: ${context.raw.overthinking.toFixed(1)} overthinking, ${context.parsed.y.toFixed(2)}% accuracy, ${context.raw.efficiency.toFixed(3)} efficiency`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Overthinking Ratio (log scale)'
+                            },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Accuracy (%)'
+                            },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        }
+                    }
+                }
+            });
+
+            // Token Efficiency Chart - Radar Chart by Model Family
+            const tokenEfficiencyCanvas = document.getElementById('tokenEfficiencyChart');
+            const tokenEfficiencyCtx = tokenEfficiencyCanvas.getContext('2d');
+
+            // Group models by family
+            const modelFamilies = {
+                'Qwen': rankedModelData.filter(m => m.model.includes('Qwen')),
+                'Phi': rankedModelData.filter(m => m.model.includes('Phi') || m.model.includes('phi')),
+                'Llama': rankedModelData.filter(m => m.model.includes('Llama') || m.model.includes('llama')),
+                'Mistral': rankedModelData.filter(m => m.model.includes('Mistral') || m.model.includes('mistral')),
+                'SmolLM': rankedModelData.filter(m => m.model.includes('SmolLM'))
+            };
+
+            // Calculate average metrics for each family
+            const familyData = Object.entries(modelFamilies).map(([family, models]) => {
+                if (models.length === 0) return null;
+                return {
+                    family,
+                    avgAccuracy: models.reduce((sum, m) => sum + m.accuracy, 0) / models.length,
+                    avgEfficiency: models.reduce((sum, m) => sum + m.efficiency, 0) / models.length,
+                    avgInstruction: models.reduce((sum, m) => sum + m.instruction, 0) / models.length,
+                    avgTokens: models.reduce((sum, m) => sum + m.tokens, 0) / models.length,
+                    tokenEfficiency: models.reduce((sum, m) => sum + (m.accuracy / m.tokens * 100), 0) / models.length
+                };
+            }).filter(d => d !== null);
+
+            new Chart(tokenEfficiencyCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Accuracy', 'Efficiency', 'Instruction Following', 'Token Efficiency', 'Low Token Usage'],
+                    datasets: familyData.map((family, index) => ({
+                        label: family.family,
+                        data: [
+                            family.avgAccuracy,
+                            family.avgEfficiency * 100,
+                            family.avgInstruction,
+                            family.tokenEfficiency,
+                            Math.max(0, 100 - (family.avgTokens / 10)) // Inverted token usage
+                        ],
+                        backgroundColor: [
+                            'rgba(16, 185, 129, 0.2)',
+                            'rgba(102, 126, 234, 0.2)',
+                            'rgba(240, 147, 251, 0.2)',
+                            'rgba(245, 158, 11, 0.2)',
+                            'rgba(239, 68, 68, 0.2)'
+                        ][index],
+                        borderColor: [
+                            'rgba(16, 185, 129, 1)',
+                            'rgba(102, 126, 234, 1)',
+                            'rgba(240, 147, 251, 1)',
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(239, 68, 68, 1)'
+                        ][index],
+                        borderWidth: 2,
+                        pointBackgroundColor: [
+                            'rgba(16, 185, 129, 1)',
+                            'rgba(102, 126, 234, 1)',
+                            'rgba(240, 147, 251, 1)',
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(239, 68, 68, 1)'
+                        ][index],
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: [
+                            'rgba(16, 185, 129, 1)',
+                            'rgba(102, 126, 234, 1)',
+                            'rgba(240, 147, 251, 1)',
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(239, 68, 68, 1)'
+                        ][index]
+                    }))
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            pointLabels: {
+                                color: 'rgba(228, 228, 231, 0.8)'
+                            },
+                            ticks: {
+                                color: 'rgba(113, 113, 122, 0.8)',
+                                backdrop: {
+                                    color: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            },
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+
+            // Instruction Following vs Accuracy Chart - Doughnut Chart
+            const instructionCanvas = document.getElementById('instructionChart');
+            const instructionCtx = instructionCanvas.getContext('2d');
+
+            // Create accuracy ranges and calculate average instruction following for each
+            const accuracyRanges = [
+                { min: 0, max: 30, label: 'Low (0-30%)', color: 'rgba(239, 68, 68, 0.8)' },
+                { min: 30, max: 50, label: 'Fair (30-50%)', color: 'rgba(245, 158, 11, 0.8)' },
+                { min: 50, max: 70, label: 'Good (50-70%)', color: 'rgba(16, 185, 129, 0.8)' },
+                { min: 70, max: 100, label: 'Excellent (70%+)', color: 'rgba(102, 126, 234, 0.8)' }
+            ];
+
+            const rangeData = accuracyRanges.map(range => {
+                const modelsInRange = rankedModelData.filter(m =>
+                    m.accuracy >= range.min && m.accuracy < range.max
+                );
+                const avgInstruction = modelsInRange.length > 0
+                    ? modelsInRange.reduce((sum, m) => sum + m.instruction, 0) / modelsInRange.length
+                    : 0;
+                return {
+                    ...range,
+                    count: modelsInRange.length,
+                    avgInstruction: avgInstruction
+                };
+            }).filter(range => range.count > 0);
+
+            new Chart(instructionCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: rangeData.map(r => `${r.label} (${r.count} models)`),
+                    datasets: [{
+                        data: rangeData.map(r => r.avgInstruction),
+                        backgroundColor: rangeData.map(r => r.color),
+                        borderColor: rangeData.map(r => r.color.replace('0.8', '1')),
+                        borderWidth: 2,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    const range = rangeData[context.dataIndex];
+                                    return `${range.label}: ${range.avgInstruction.toFixed(1)}% avg instruction following`;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '60%',
+                    elements: {
+                        arc: {
+                            borderWidth: 2
+                        }
+                    }
+                }
+            });
+
+            // Performance Distribution Chart - Stacked Area Chart
+            const distributionCanvas = document.getElementById('distributionChart');
+            const distributionCtx = distributionCanvas.getContext('2d');
+
+            // Sort models by rank and take top 20 for visualization
+            const topModels = rankedModelData.slice(0, 20).sort((a, b) => a.rank - b.rank);
+
+            new Chart(distributionCtx, {
+                type: 'line',
+                data: {
+                    labels: topModels.map(m => `#${m.rank}`),
+                    datasets: [{
+                        label: 'Accuracy',
+                        data: topModels.map(m => m.accuracy),
+                        backgroundColor: 'rgba(102, 126, 234, 0.3)',
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }, {
+                        label: 'Instruction Following',
+                        data: topModels.map(m => m.instruction),
+                        backgroundColor: 'rgba(16, 185, 129, 0.3)',
+                        borderColor: 'rgba(16, 185, 129, 1)',
+                        borderWidth: 2,
+                        fill: '-1',
+                        tension: 0.4
+                    }, {
+                        label: 'Efficiency Score',
+                        data: topModels.map(m => m.efficiency * 100),
+                        backgroundColor: 'rgba(240, 147, 251, 0.3)',
+                        borderColor: 'rgba(240, 147, 251, 1)',
+                        borderWidth: 2,
+                        fill: '-1',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            bottom: 20
+                        }
+                    },
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: function (context) {
+                                    const model = topModels[context[0].dataIndex];
+                                    return model.model.split('/').pop();
+                                },
+                                label: function (context) {
+                                    const model = topModels[context.dataIndex];
+                                    const value = context.datasetIndex === 2 ?
+                                        (context.parsed.y / 100).toFixed(3) :
+                                        context.parsed.y.toFixed(2) + '%';
+                                    return `${context.dataset.label}: ${value}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Model Rank'
+                            },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Performance Score'
+                            },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    },
+                    elements: {
+                        line: {
+                            borderWidth: 2
+                        },
+                        point: {
+                            radius: 4,
+                            hoverRadius: 6
+                        }
+                    }
+                }
+            });
+        }
+
+        // ===== ENHANCED INTERACTIVE FEATURES =====
+
+        // Global state for comparisons and filters
+        let selectedModels = new Set();
+        let filteredData = [...rankedModelData];
+        let fabMenuOpen = false;
+
+        // Particle System
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // Scroll Animations
+        function initScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Enhanced Table Rendering with Actions
+        function renderTable(data) {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+
+            data.forEach((model) => {
+                const row = document.createElement('tr');
+                const rankIcon = model.rank <= 3 ? ['🥇', '🥈', '🥉'][model.rank - 1] : '';
+                const isSelected = selectedModels.has(model.model);
+
+                row.innerHTML = `
+                    <td>
+                        <span class="rank rank-${model.rank}">
+                            ${rankIcon} #${model.rank}
+                        </span>
+                    </td>
+                    <td class="model-name">${model.model}</td>
+                    <td>${model.params}</td>
+                    <td class="${getMetricClass(model.accuracy, 'accuracy')}">${model.accuracy.toFixed(2)}%</td>
+                    <td class="${getMetricClass(model.efficiency * 100, 'efficiency')}">${model.efficiency.toFixed(3)}</td>
+                    <td class="${getMetricClass(model.instruction, 'instruction')}">${model.instruction.toFixed(2)}%</td>
+                    <td class="${getMetricClass(model.overthinking, 'overthinking')}">${model.overthinking.toFixed(1)}</td>
+                    <td class="${getMetricClass(model.tokens, 'tokens')}">${model.tokens.toFixed(1)}</td>
+                    <td class="${getMetricClass(model.words, 'words')}">${model.words.toFixed(1)}</td>
+                    <td class="${getMetricClass(model.chars, 'chars')}">${model.chars.toFixed(1)}</td>
+                    <td>
+                        <button class="btn btn-secondary" onclick="toggleModelSelection('${model.model}')" 
+                                style="padding: 0.4rem 0.8rem; font-size: 0.8rem; ${isSelected ? 'background: var(--primary-color); color: white;' : ''}">
+                            <i class="fas fa-${isSelected ? 'check' : 'plus'}"></i>
+                        </button>
+                    </td>
+                `;
+
+                // Add click event for row selection
+                row.addEventListener('click', (e) => {
+                    if (!e.target.closest('button')) {
+                        showModelDetails(model);
+                    }
+                });
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Model Selection for Comparison
+        function toggleModelSelection(modelName) {
+            if (selectedModels.has(modelName)) {
+                selectedModels.delete(modelName);
+            } else {
+                if (selectedModels.size >= 5) {
+                    alert('You can compare up to 5 models at once.');
+                    return;
+                }
+                selectedModels.add(modelName);
+            }
+
+            updateComparePanel();
+            renderTable(filteredData);
+        }
+
+        function updateComparePanel() {
+            const panel = document.getElementById('comparePanel');
+            const items = document.getElementById('compareItems');
+
+            if (selectedModels.size > 0) {
+                panel.classList.add('active');
+                items.innerHTML = Array.from(selectedModels).map(modelName => {
+                    const model = rankedModelData.find(m => m.model === modelName);
+                    return `
+                        <div class="compare-item">
+                            <span>${model.model.split('/').pop()}</span>
+                            <button class="compare-remove" onclick="toggleModelSelection('${modelName}')">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                panel.classList.remove('active');
+            }
+        }
+
+        // Advanced Filtering
+        function initFilters() {
+            const accuracyMin = document.getElementById('accuracyMin');
+            const accuracyMax = document.getElementById('accuracyMax');
+            const familyFilter = document.getElementById('familyFilter');
+            const sizeFilter = document.getElementById('sizeFilter');
+            const efficiencyFilter = document.getElementById('efficiencyFilter');
+            const quantizationFilter = document.getElementById('quantizationFilter');
+
+            // Update range displays
+            function updateRanges() {
+                document.getElementById('accuracyRange').textContent =
+                    `${accuracyMin.value}% - ${accuracyMax.value}%`;
+                document.getElementById('efficiencyValue').textContent =
+                    parseFloat(efficiencyFilter.value).toFixed(3);
+            }
+
+            [accuracyMin, accuracyMax, efficiencyFilter].forEach(slider => {
+                slider.addEventListener('input', updateRanges);
+                slider.addEventListener('change', applyFilters);
+            });
+
+            [familyFilter, sizeFilter, quantizationFilter].forEach(select => {
+                select.addEventListener('change', applyFilters);
+            });
+
+            updateRanges();
+        }
+
+        function applyFilters() {
+            const accuracyMin = parseFloat(document.getElementById('accuracyMin').value);
+            const accuracyMax = parseFloat(document.getElementById('accuracyMax').value);
+            const familyFilter = document.getElementById('familyFilter').value;
+            const sizeFilter = document.getElementById('sizeFilter').value;
+            const efficiencyFilter = parseFloat(document.getElementById('efficiencyFilter').value);
+            const quantizationFilter = document.getElementById('quantizationFilter').value;
+
+            filteredData = rankedModelData.filter(model => {
+                // Accuracy range
+                if (model.accuracy < accuracyMin || model.accuracy > accuracyMax) return false;
+
+                // Family filter
+                if (familyFilter && !model.model.toLowerCase().includes(familyFilter.toLowerCase())) return false;
+
+                // Size filter
+                if (sizeFilter) {
+                    const params = parseFloat(model.params.replace(/[^0-9.]/g, ''));
+                    if (sizeFilter === 'small' && params >= 3) return false;
+                    if (sizeFilter === 'medium' && (params < 3 || params > 10)) return false;
+                    if (sizeFilter === 'large' && params <= 10) return false;
+                }
+
+                // Efficiency filter
+                if (model.efficiency < efficiencyFilter) return false;
+
+                // Quantization filter
+                if (quantizationFilter) {
+                    if (quantizationFilter === 'normal' && model.quantization !== 'None') return false;
+                    if (quantizationFilter === 'quantized' && model.quantization === 'None') return false;
+                    if (quantizationFilter === 'GPTQ-8-Bit' && model.quantization !== 'GPTQ-8-Bit') return false;
+                    if (quantizationFilter === 'GPTQ-4-Bit' && model.quantization !== 'GPTQ-4-Bit') return false;
+                }
+
+                return true;
+            });
+
+            renderTable(filteredData);
+        }
+
+        function resetFilters() {
+            document.getElementById('accuracyMin').value = 0;
+            document.getElementById('accuracyMax').value = 100;
+            document.getElementById('familyFilter').value = '';
+            document.getElementById('sizeFilter').value = '';
+            document.getElementById('efficiencyFilter').value = 0;
+            document.getElementById('quantizationFilter').value = '';
+
+            document.getElementById('accuracyRange').textContent = '0% - 100%';
+            document.getElementById('efficiencyValue').textContent = '0.000';
+
+            filteredData = [...rankedModelData];
+            renderTable(filteredData);
+        }
+
+        // Floating Action Menu
+        function toggleFabMenu() {
+            const menu = document.getElementById('fabMenu');
+            const button = document.getElementById('fabButton');
+
+            fabMenuOpen = !fabMenuOpen;
+            menu.classList.toggle('active', fabMenuOpen);
+            button.querySelector('i').style.transform = fabMenuOpen ? 'rotate(45deg)' : 'rotate(0deg)';
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            toggleFabMenu();
+        }
+
+        function toggleFilters() {
+            const filterPanel = document.querySelector('.filter-panel');
+            filterPanel.scrollIntoView({ behavior: 'smooth' });
+            toggleFabMenu();
+        }
+
+        function exportData() {
+            const csvData = [
+                ['Rank', 'Model', 'Parameters', 'Accuracy', 'Efficiency', 'Instruction Following', 'Overthinking', 'Tokens', 'Words', 'Characters'],
+                ...filteredData.map(m => [
+                    m.rank, m.model, m.params, m.accuracy, m.efficiency, m.instruction,
+                    m.overthinking, m.tokens, m.words, m.chars
+                ])
+            ].map(row => row.join(',')).join('\\n');
+
+            const blob = new Blob([csvData], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'llmthinkbench_leaderboard.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+            toggleFabMenu();
+        }
+
+        // Comparison Modal
+        function openComparisonModal() {
+            if (selectedModels.size < 2) {
+                alert('Please select at least 2 models to compare.');
+                return;
+            }
+
+            const modal = document.getElementById('comparisonModal');
+            const content = document.getElementById('comparisonContent');
+
+            const compareData = Array.from(selectedModels).map(modelName =>
+                rankedModelData.find(m => m.model === modelName)
+            );
+
+            content.innerHTML = `
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: rgba(102, 126, 234, 0.2);">
+                                <th style="padding: 1rem; text-align: left; border: 1px solid rgba(255,255,255,0.1);">Metric</th>
+                                ${compareData.map(m => `<th style="padding: 1rem; text-align: center; border: 1px solid rgba(255,255,255,0.1);">${m.model.split('/').pop()}</th>`).join('')}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td style="padding: 0.75rem; border: 1px solid rgba(255,255,255,0.1); font-weight: 600;">Rank</td>${compareData.map(m => `<td style="padding: 0.75rem; border: 1px solid rgba(255,255,255,0.1); text-align: center;">#${m.rank}</td>`).join('')}</tr>
+                            <tr><td style="padding: 0.75rem; border: 1px solid rgba(255,255,255,0.1); font-weight: 600;">Parameters</td>${compareData.map(m => `<td style="padding: 0.75rem; border: 1px solid rgba(255,255,255,0.1); text-align: center;">${m.params}</td>`).join('')}</tr>
+                            <tr><td style="padding: 0.75rem; border: 1px solid rgba(255,255,255,0.1); font-weight: 600;">Accuracy</td>${compareData.map(m => `<td style="padding: 0.75rem; border: 1px solid rgba(255,255,255,0.1); text-align: center; color: ${getMetricColor(m.accuracy, 'accuracy')}">${m.accuracy.toFixed(2)}%</td>`).join('')}</tr>
+                            <tr><td style="padding: 0.75rem; border: 1px solid rgba(255,255,255,0.1); font-weight: 600;">Efficiency</td>${compareData.map(m => `<td style="padding: 0.75rem; border: 1px solid rgba(255,255,255,0.1); text-align: center; color: ${getMetricColor(m.efficiency * 100, 'efficiency')}">${m.efficiency.toFixed(3)}</td>`).join('')}</tr>
+                            <tr><td style="padding: 0.75rem; border: 1px solid rgba(255,255,255,0.1); font-weight: 600;">Instruction Following</td>${compareData.map(m => `<td style="padding: 0.75rem; border: 1px solid rgba(255,255,255,0.1); text-align: center; color: ${getMetricColor(m.instruction, 'instruction')}">${m.instruction.toFixed(2)}%</td>`).join('')}</tr>
+                            <tr><td style="padding: 0.75rem; border: 1px solid rgba(255,255,255,0.1); font-weight: 600;">Overthinking</td>${compareData.map(m => `<td style="padding: 0.75rem; border: 1px solid rgba(255,255,255,0.1); text-align: center; color: ${getMetricColor(m.overthinking, 'overthinking')}">${m.overthinking.toFixed(1)}</td>`).join('')}</tr>
+                            <tr><td style="padding: 0.75rem; border: 1px solid rgba(255,255,255,0.1); font-weight: 600;">Avg Tokens</td>${compareData.map(m => `<td style="padding: 0.75rem; border: 1px solid rgba(255,255,255,0.1); text-align: center; color: ${getMetricColor(m.tokens, 'tokens')}">${m.tokens.toFixed(1)}</td>`).join('')}</tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="margin-top: 2rem;">
+                    <canvas id="comparisonChart" style="max-height: 400px;"></canvas>
+                </div>
+            `;
+
+            modal.classList.add('active');
+
+            // Create comparison chart
+            setTimeout(() => createComparisonChart(compareData), 100);
+        }
+
+        function createComparisonChart(compareData) {
+            const canvas = document.getElementById('comparisonChart');
+            const ctx = canvas.getContext('2d');
+
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Accuracy', 'Efficiency', 'Instruction Following', 'Low Overthinking', 'Token Efficiency'],
+                    datasets: compareData.map((model, index) => ({
+                        label: model.model.split('/').pop(),
+                        data: [
+                            model.accuracy,
+                            model.efficiency * 100,
+                            model.instruction,
+                            Math.max(0, 100 - Math.log10(model.overthinking) * 10),
+                            Math.max(0, 100 - model.tokens / 10)
+                        ],
+                        backgroundColor: [
+                            'rgba(102, 126, 234, 0.2)',
+                            'rgba(240, 147, 251, 0.2)',
+                            'rgba(16, 185, 129, 0.2)',
+                            'rgba(245, 158, 11, 0.2)',
+                            'rgba(239, 68, 68, 0.2)'
+                        ][index],
+                        borderColor: [
+                            'rgba(102, 126, 234, 1)',
+                            'rgba(240, 147, 251, 1)',
+                            'rgba(16, 185, 129, 1)',
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(239, 68, 68, 1)'
+                        ][index],
+                        borderWidth: 2
+                    }))
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            pointLabels: { color: 'rgba(228, 228, 231, 0.8)' },
+                            ticks: { color: 'rgba(113, 113, 122, 0.8)', backdrop: { color: 'rgba(0, 0, 0, 0.5)' } }
+                        }
+                    }
+                }
+            });
+        }
+
+        function closeComparisonModal() {
+            document.getElementById('comparisonModal').classList.remove('active');
+        }
+
+        function clearComparison() {
+            selectedModels.clear();
+            updateComparePanel();
+            renderTable(filteredData);
+        }
+
+        // Model Details Function
+        function showModelDetails(model) {
+            const modal = document.getElementById('comparisonModal');
+            const content = document.getElementById('comparisonContent');
+
+            content.innerHTML = `
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;">${model.model}</h3>
+                    <p style="color: var(--text-dark);">Rank #${model.rank} • ${model.params} Parameters</p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                    <div style="background: rgba(102, 126, 234, 0.1); padding: 1rem; border-radius: 12px; text-align: center;">
+                        <h4 style="color: var(--primary-color); margin: 0 0 0.5rem 0;">Accuracy</h4>
+                        <p style="font-size: 1.5rem; font-weight: bold; color: ${getMetricColor(model.accuracy, 'accuracy')}; margin: 0;">${model.accuracy.toFixed(2)}%</p>
+                    </div>
+                    <div style="background: rgba(240, 147, 251, 0.1); padding: 1rem; border-radius: 12px; text-align: center;">
+                        <h4 style="color: var(--accent-color); margin: 0 0 0.5rem 0;">Efficiency</h4>
+                        <p style="font-size: 1.5rem; font-weight: bold; color: ${getMetricColor(model.efficiency * 100, 'efficiency')}; margin: 0;">${model.efficiency.toFixed(3)}</p>
+                    </div>
+                    <div style="background: rgba(16, 185, 129, 0.1); padding: 1rem; border-radius: 12px; text-align: center;">
+                        <h4 style="color: var(--success-color); margin: 0 0 0.5rem 0;">Instruction Following</h4>
+                        <p style="font-size: 1.5rem; font-weight: bold; color: ${getMetricColor(model.instruction, 'instruction')}; margin: 0;">${model.instruction.toFixed(2)}%</p>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                    <div style="background: rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 8px;">
+                        <h5 style="color: var(--text-dark); margin: 0 0 0.5rem 0; font-size: 0.9rem;">Overthinking Ratio</h5>
+                        <p style="font-weight: bold; color: ${getMetricColor(model.overthinking, 'overthinking')}; margin: 0;">${model.overthinking.toFixed(1)}</p>
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 8px;">
+                        <h5 style="color: var(--text-dark); margin: 0 0 0.5rem 0; font-size: 0.9rem;">Avg Tokens</h5>
+                        <p style="font-weight: bold; color: ${getMetricColor(model.tokens, 'tokens')}; margin: 0;">${model.tokens.toFixed(1)}</p>
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 8px;">
+                        <h5 style="color: var(--text-dark); margin: 0 0 0.5rem 0; font-size: 0.9rem;">Avg Words</h5>
+                        <p style="font-weight: bold; color: ${getMetricColor(model.words, 'words')}; margin: 0;">${model.words.toFixed(1)}</p>
+                    </div>
+                    <div style="background: rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 8px;">
+                        <h5 style="color: var(--text-dark); margin: 0 0 0.5rem 0; font-size: 0.9rem;">Avg Characters</h5>
+                        <p style="font-weight: bold; color: ${getMetricColor(model.chars, 'chars')}; margin: 0;">${model.chars.toFixed(1)}</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem; text-align: center;">
+                    <button class="btn btn-primary" onclick="toggleModelSelection('${model.model}'); closeComparisonModal();">
+                        <i class="fas fa-plus"></i> Add to Comparison
+                    </button>
+                </div>
+            `;
+
+            modal.classList.add('active');
+        }
+
+        // Helper function to get metric colors
+        function getMetricColor(value, metric) {
+            switch (metric) {
+                case 'accuracy':
+                case 'instruction':
+                case 'efficiency':
+                    return value >= 70 ? 'var(--success-color)' : value >= 40 ? 'var(--warning-color)' : 'var(--danger-color)';
+                case 'overthinking':
+                case 'tokens':
+                    return value <= 500 ? 'var(--success-color)' : value <= 1000 ? 'var(--warning-color)' : 'var(--danger-color)';
+                default:
+                    return 'var(--text-light)';
+            }
+        }
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function () {
+            createParticles();
+            initScrollAnimations();
+            initFilters();
+            updateTopModels();
+
+            // Sort by rank initially to show highest accuracy first
+            const initialSortedData = [...rankedModelData].sort((a, b) => a.rank - b.rank);
+            filteredData = initialSortedData;
+            renderTable(initialSortedData);
+            initCharts();
+        });
+
+        // Add smooth scrolling for citation link
+        document.querySelector('a[href="#citation"]').addEventListener('click', function (e) {
+            e.preventDefault();
+            document.getElementById('citation').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Close modals when clicking outside
+        document.addEventListener('click', function (e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('active');
+            }
+        });
+
+        // Close FAB menu when clicking outside
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.fab-container') && fabMenuOpen) {
+                toggleFabMenu();
+            }
+        });
+    </script>
+</body>
+
+</html>

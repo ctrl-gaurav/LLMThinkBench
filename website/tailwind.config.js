@@ -1,0 +1,203 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        space: {
+          900: '#050510',
+          800: '#0a0a1a',
+          700: '#0f0f23',
+          600: '#16162a',
+          500: '#1a1a2e',
+          400: '#1e1e3a',
+          300: '#2a2a4a',
+          200: '#3a3a5c',
+        },
+        neon: {
+          indigo: '#667eea',
+          purple: '#7C4DFF',
+          pink: '#f093fb',
+          magenta: '#ff6b9d',
+          cyan: '#00E5FF',
+          teal: '#00BFA5',
+          blue: '#4facfe',
+          lime: '#a8ff78',
+        },
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+        display: ['Inter', 'system-ui', 'sans-serif'],
+      },
+      animation: {
+        'float': 'float 6s ease-in-out infinite',
+        'float-slow': 'float 10s ease-in-out infinite',
+        'float-delayed': 'float 8s ease-in-out infinite 2s',
+        'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
+        'pulse-ring': 'pulseRing 2s ease-in-out infinite',
+        'pulse-soft': 'pulseSoft 3s ease-in-out infinite',
+        'gradient-x': 'gradientX 8s ease infinite',
+        'gradient-text': 'gradientText 4s ease infinite',
+        'shimmer': 'shimmer 2s linear infinite',
+        'shimmer-slow': 'shimmer 4s linear infinite',
+        'spin-slow': 'spin 8s linear infinite',
+        'spin-slower': 'spin 20s linear infinite',
+        'bounce-slow': 'bounce 3s infinite',
+        'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
+        'slide-in-left': 'slideInLeft 0.6s ease-out forwards',
+        'slide-in-right': 'slideInRight 0.6s ease-out forwards',
+        'scale-in': 'scaleIn 0.5s ease-out forwards',
+        'particle-float': 'particleFloat 15s infinite linear',
+        'typewriter': 'typewriter 3s steps(40) forwards',
+        'glow': 'glow 2s ease-in-out infinite alternate',
+        'border-flow': 'borderFlow 3s linear infinite',
+        'aurora': 'aurora 8s ease-in-out infinite alternate',
+        'morph': 'morph 12s ease-in-out infinite',
+        'flicker': 'flicker 4s ease-in-out infinite',
+        'scan': 'scan 8s linear infinite',
+        'wave': 'wave 3s ease-in-out infinite',
+        'orbit': 'orbit 20s linear infinite',
+        'orbit-reverse': 'orbit 25s linear infinite reverse',
+        'glitch': 'glitch 5s ease-in-out infinite',
+        'slide-up-fade': 'slideUpFade 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards',
+        'counter-spin': 'spin 12s linear infinite reverse',
+        'breathe': 'breathe 4s ease-in-out infinite',
+        'gradient-border': 'gradientBorder 3s linear infinite',
+      },
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-20px)' },
+        },
+        pulseGlow: {
+          '0%, 100%': { boxShadow: '0 0 20px rgba(102, 126, 234, 0.3)' },
+          '50%': { boxShadow: '0 0 40px rgba(102, 126, 234, 0.6), 0 0 80px rgba(102, 126, 234, 0.2)' },
+        },
+        pulseRing: {
+          '0%': { transform: 'scale(1)', opacity: '0.6' },
+          '50%': { transform: 'scale(1.15)', opacity: '0.3' },
+          '100%': { transform: 'scale(1)', opacity: '0.6' },
+        },
+        pulseSoft: {
+          '0%, 100%': { opacity: '0.4' },
+          '50%': { opacity: '0.8' },
+        },
+        gradientX: {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+        },
+        gradientText: {
+          '0%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+          '100%': { backgroundPosition: '0% 50%' },
+        },
+        shimmer: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
+        },
+        fadeInUp: {
+          '0%': { opacity: '0', transform: 'translateY(30px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideInLeft: {
+          '0%': { opacity: '0', transform: 'translateX(-50px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        slideInRight: {
+          '0%': { opacity: '0', transform: 'translateX(50px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        scaleIn: {
+          '0%': { opacity: '0', transform: 'scale(0.8)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        particleFloat: {
+          '0%': { transform: 'translateY(100vh) translateX(-50px)', opacity: '0' },
+          '10%': { opacity: '1' },
+          '90%': { opacity: '1' },
+          '100%': { transform: 'translateY(-100px) translateX(50px)', opacity: '0' },
+        },
+        glow: {
+          '0%': { textShadow: '0 0 10px rgba(102, 126, 234, 0.5)' },
+          '100%': { textShadow: '0 0 20px rgba(102, 126, 234, 0.8), 0 0 40px rgba(240, 147, 251, 0.4)' },
+        },
+        borderFlow: {
+          '0%': { backgroundPosition: '0% 50%' },
+          '100%': { backgroundPosition: '200% 50%' },
+        },
+        aurora: {
+          '0%': { transform: 'translate(0, 0) scale(1)', opacity: '0.3' },
+          '33%': { transform: 'translate(30px, -30px) scale(1.1)', opacity: '0.5' },
+          '66%': { transform: 'translate(-20px, 20px) scale(0.9)', opacity: '0.3' },
+          '100%': { transform: 'translate(0, 0) scale(1)', opacity: '0.3' },
+        },
+        morph: {
+          '0%, 100%': { borderRadius: '60% 40% 30% 70% / 60% 30% 70% 40%' },
+          '50%': { borderRadius: '30% 60% 70% 40% / 50% 60% 30% 60%' },
+        },
+        flicker: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.8' },
+          '52%': { opacity: '1' },
+          '54%': { opacity: '0.9' },
+        },
+        scan: {
+          '0%': { transform: 'translateY(-100%)' },
+          '100%': { transform: 'translateY(100%)' },
+        },
+        wave: {
+          '0%, 100%': { transform: 'scaleY(1)' },
+          '50%': { transform: 'scaleY(0.6)' },
+        },
+        orbit: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+        glitch: {
+          '0%, 100%': { transform: 'translate(0)' },
+          '1%': { transform: 'translate(-2px, 1px)' },
+          '2%': { transform: 'translate(2px, -1px)' },
+          '3%': { transform: 'translate(0)' },
+          '40%': { transform: 'translate(0)' },
+          '41%': { transform: 'translate(-1px, 2px)' },
+          '42%': { transform: 'translate(1px, -1px)' },
+          '43%': { transform: 'translate(0)' },
+        },
+        slideUpFade: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        breathe: {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.05)' },
+        },
+        gradientBorder: {
+          '0%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+          '100%': { backgroundPosition: '0% 50%' },
+        },
+      },
+      backgroundSize: {
+        '200%': '200% 200%',
+        '300%': '300% 300%',
+        '400%': '400% 400%',
+      },
+      backdropBlur: {
+        xs: '2px',
+      },
+      boxShadow: {
+        'neon-indigo': '0 0 20px rgba(102, 126, 234, 0.4), 0 0 60px rgba(102, 126, 234, 0.1)',
+        'neon-purple': '0 0 20px rgba(124, 77, 255, 0.4), 0 0 60px rgba(124, 77, 255, 0.1)',
+        'neon-pink': '0 0 20px rgba(240, 147, 251, 0.4), 0 0 60px rgba(240, 147, 251, 0.1)',
+        'neon-cyan': '0 0 20px rgba(0, 229, 255, 0.4), 0 0 60px rgba(0, 229, 255, 0.1)',
+        'neon-glow': '0 0 30px rgba(102, 126, 234, 0.3), 0 0 60px rgba(124, 77, 255, 0.15), 0 0 100px rgba(240, 147, 251, 0.05)',
+        'inner-glow': 'inset 0 0 30px rgba(102, 126, 234, 0.1)',
+      },
+    },
+  },
+  plugins: [],
+}

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0a1a"/>
+      <stop offset="100%" stop-color="#12122a"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#667eea"/>
+      <stop offset="50%" stop-color="#7C4DFF"/>
+      <stop offset="100%" stop-color="#f093fb"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#667eea" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#f093fb" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background rounded square -->
+  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+
+  <!-- Subtle outer border -->
+  <rect x="2" y="2" width="124" height="124" rx="26" fill="none" stroke="url(#accent)" stroke-width="1.5" opacity="0.3"/>
+
+  <!-- Brain circuit: stylized neural/thinking icon -->
+  <!-- Top arc (brain shape left) -->
+  <path d="M44 58 C44 40, 58 30, 64 30 C70 30, 76 36, 76 42" fill="none" stroke="url(#accent)" stroke-width="4" stroke-linecap="round"/>
+  <!-- Top arc (brain shape right) -->
+  <path d="M76 42 C76 36, 82 30, 88 38 C92 44, 88 52, 84 56" fill="none" stroke="url(#accent)" stroke-width="4" stroke-linecap="round"/>
+  <!-- Bottom arc left -->
+  <path d="M44 58 C40 64, 42 74, 50 78 C56 82, 62 78, 64 74" fill="none" stroke="url(#accent)" stroke-width="4" stroke-linecap="round"/>
+  <!-- Bottom arc right -->
+  <path d="M84 56 C88 62, 86 72, 78 78 C72 82, 66 78, 64 74" fill="none" stroke="url(#accent)" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Neural nodes -->
+  <circle cx="64" cy="48" r="3.5" fill="#667eea"/>
+  <circle cx="52" cy="62" r="3" fill="#7C4DFF"/>
+  <circle cx="76" cy="62" r="3" fill="#7C4DFF"/>
+  <circle cx="64" cy="74" r="3.5" fill="#f093fb"/>
+
+  <!-- Neural connections -->
+  <line x1="64" y1="48" x2="52" y2="62" stroke="#667eea" stroke-width="1.5" opacity="0.5"/>
+  <line x1="64" y1="48" x2="76" y2="62" stroke="#667eea" stroke-width="1.5" opacity="0.5"/>
+  <line x1="52" y1="62" x2="64" y2="74" stroke="#7C4DFF" stroke-width="1.5" opacity="0.5"/>
+  <line x1="76" y1="62" x2="64" y2="74" stroke="#7C4DFF" stroke-width="1.5" opacity="0.5"/>
+  <line x1="52" y1="62" x2="76" y2="62" stroke="#7C4DFF" stroke-width="1" opacity="0.3"/>
+
+  <!-- Benchmark bar chart at bottom -->
+  <rect x="38" y="92" width="8" height="14" rx="2" fill="#667eea" opacity="0.7"/>
+  <rect x="50" y="88" width="8" height="18" rx="2" fill="#7C4DFF" opacity="0.8"/>
+  <rect x="62" y="84" width="8" height="22" rx="2" fill="url(#accent)"/>
+  <rect x="74" y="90" width="8" height="16" rx="2" fill="#7C4DFF" opacity="0.8"/>
+  <rect x="86" y="94" width="8" height="12" rx="2" fill="#f093fb" opacity="0.7"/>
+
+  <!-- Glow effect behind brain -->
+  <circle cx="64" cy="58" r="24" fill="url(#glow)" opacity="0.15"/>
+</svg>
