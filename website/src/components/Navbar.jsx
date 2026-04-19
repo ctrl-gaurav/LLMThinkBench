@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { Brain, Github, Package, Quote, Menu, X, BookOpen } from 'lucide-react'
+import { Brain, Github, Package, Quote, Menu, X, BookOpen, Sun, Moon } from 'lucide-react'
 import { usePyPIVersion } from '../hooks/usePyPIVersion'
+import { useTheme } from '../context/ThemeContext'
 
 export default function Navbar({ scrollToSection }) {
   // Fallback: when rendered on /docs (no home-page sections available), jump to home and then scroll
@@ -13,6 +14,7 @@ export default function Navbar({ scrollToSection }) {
     }, 100)
   }
   const pypiVersion = usePyPIVersion()
+  const { isDark, toggleTheme } = useTheme()
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('')
@@ -124,15 +126,33 @@ export default function Navbar({ scrollToSection }) {
               <Quote size={16} className="group-hover:scale-110 transition-transform" />
               Cite
             </button>
+
+            <button
+              onClick={toggleTheme}
+              aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
+              title={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
+              className="ml-1 p-2 rounded-lg text-zinc-500 hover:text-neon-cyan hover:bg-neon-cyan/5 transition-all duration-300 btn-press"
+            >
+              {isDark ? <Sun size={16} /> : <Moon size={16} />}
+            </button>
           </nav>
 
-          {/* Mobile menu button */}
+          {/* Mobile theme toggle + menu */}
+          <div className="md:hidden flex items-center gap-1">
+            <button
+              onClick={toggleTheme}
+              aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
+              className="p-2 rounded-lg text-zinc-400 hover:text-neon-cyan transition-colors btn-press"
+            >
+              {isDark ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
           <button
-            className="md:hidden text-zinc-400 hover:text-white transition-colors btn-press"
+            className="text-zinc-400 hover:text-white transition-colors btn-press"
             onClick={() => setMobileOpen(!mobileOpen)}
           >
             {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
+          </div>
         </div>
 
         {/* Mobile nav - slide in */}
