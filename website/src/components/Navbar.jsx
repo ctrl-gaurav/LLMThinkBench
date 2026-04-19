@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import { Brain, Github, Package, Quote, Menu, X } from 'lucide-react'
+import { Brain, Github, Package, Quote, Menu, X, BookOpen } from 'lucide-react'
 import { usePyPIVersion } from '../hooks/usePyPIVersion'
 
 export default function Navbar({ scrollToSection }) {
+  // Fallback: when rendered on /docs (no home-page sections available), jump to home and then scroll
+  const handleSectionClick = (id) => {
+    if (scrollToSection) return scrollToSection(id)
+    window.location.hash = '#/'
+    setTimeout(() => {
+      const el = document.getElementById(id)
+      if (el) el.scrollIntoView({ behavior: 'smooth' })
+    }, 100)
+  }
   const pypiVersion = usePyPIVersion()
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -63,7 +72,7 @@ export default function Navbar({ scrollToSection }) {
             {navItems.map((item) => (
               <button
                 key={item.id}
-                onClick={() => scrollToSection(item.id)}
+                onClick={() => handleSectionClick(item.id)}
                 className={`text-sm font-medium transition-all duration-300 relative py-1.5 px-1 btn-press ${
                   activeSection === item.id
                     ? 'text-white nav-active-indicator'
@@ -73,6 +82,14 @@ export default function Navbar({ scrollToSection }) {
                 <span className="relative z-10">{item.label}</span>
               </button>
             ))}
+
+            <a
+              href="#/docs"
+              className="text-zinc-500 hover:text-neon-cyan transition-all duration-300 flex items-center gap-1.5 text-sm neon-hover group"
+            >
+              <BookOpen size={16} className="group-hover:scale-110 transition-transform" />
+              Docs
+            </a>
 
             <div className="h-5 w-px bg-gradient-to-b from-transparent via-zinc-700 to-transparent" />
 
@@ -95,7 +112,7 @@ export default function Navbar({ scrollToSection }) {
               PyPI{pypiVersion ? ` v${pypiVersion}` : ''}
             </a>
             <button
-              onClick={() => scrollToSection('citation')}
+              onClick={() => handleSectionClick("citation")}
               className="text-zinc-500 hover:text-neon-pink transition-all duration-300 flex items-center gap-1.5 text-sm neon-hover group"
             >
               <Quote size={16} className="group-hover:scale-110 transition-transform" />
@@ -123,7 +140,7 @@ export default function Navbar({ scrollToSection }) {
               <button
                 key={item.id}
                 onClick={() => {
-                  scrollToSection(item.id)
+                  handleSectionClick(item.id)
                   setMobileOpen(false)
                 }}
                 className="block w-full text-left px-4 py-2.5 text-sm text-zinc-400 hover:text-neon-indigo rounded-xl hover:bg-neon-indigo/5 transition-all btn-press"
@@ -133,6 +150,13 @@ export default function Navbar({ scrollToSection }) {
               </button>
             ))}
             <div className="border-t border-zinc-800/50 pt-3 space-y-1">
+              <a
+                href="#/docs"
+                className="flex items-center gap-2 px-4 py-2.5 text-sm text-zinc-400 hover:text-neon-cyan rounded-xl hover:bg-neon-cyan/5 transition-all"
+                onClick={() => setMobileOpen(false)}
+              >
+                <BookOpen size={16} /> Docs
+              </a>
               <a
                 href="https://github.com/ctrl-gaurav/LLMThinkBench"
                 target="_blank"

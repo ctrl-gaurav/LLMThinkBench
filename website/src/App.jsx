@@ -11,6 +11,8 @@ import FloatingActionMenu from './components/FloatingActionMenu'
 import ScrollToTop from './components/ScrollToTop'
 import ParticleBackground from './components/ParticleBackground'
 import Footer from './components/Footer'
+import Documentation from './pages/Documentation'
+import { ThemeProvider } from './context/ThemeContext'
 
 const PerformanceCharts = lazy(() => import('./components/PerformanceCharts'))
 
@@ -407,12 +409,25 @@ function HomePage() {
   )
 }
 
+function DocsPage() {
+  return (
+    <div className="min-h-screen bg-space-900">
+      <Navbar />
+      <Documentation />
+      <Footer />
+    </div>
+  )
+}
+
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="*" element={<HomePage />} />
-    </Routes>
+    <ThemeProvider>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/docs" element={<DocsPage />} />
+        <Route path="*" element={<HomePage />} />
+      </Routes>
+    </ThemeProvider>
   )
 }
 
