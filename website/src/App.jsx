@@ -410,11 +410,34 @@ function HomePage() {
 }
 
 function DocsPage() {
+  // Ensure .reveal elements (footer, etc.) fade in on /docs
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add('visible')
+        })
+      },
+      { threshold: 0.05, rootMargin: '0px 0px 50px 0px' }
+    )
+    const elements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale')
+    elements.forEach((el) => observer.observe(el))
+    return () => observer.disconnect()
+  }, [])
+
   return (
-    <div className="min-h-screen bg-space-900">
-      <Navbar />
-      <Documentation />
-      <Footer />
+    <div className="min-h-screen bg-space-900 relative overflow-hidden">
+      {/* Ambient background orbs for visual consistency with landing */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 -left-48 w-[500px] h-[500px] bg-neon-indigo/10 rounded-full blur-[120px]" />
+        <div className="absolute top-1/3 -right-48 w-[500px] h-[500px] bg-neon-purple/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 left-1/3 w-[400px] h-[400px] bg-neon-cyan/5 rounded-full blur-[120px]" />
+      </div>
+      <div className="relative z-10">
+        <Navbar />
+        <Documentation />
+        <Footer />
+      </div>
     </div>
   )
 }

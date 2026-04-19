@@ -1,9 +1,21 @@
+# === Node / website ===
+node_modules/
+.cache/
+*.local
+website/dist/
+
+# === OS / Editor ===
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-
-.DS_Store
 
 # C extensions
 *.so

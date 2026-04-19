@@ -6,14 +6,12 @@ export default function Footer() {
   const pypiVersion = usePyPIVersion()
   const [copied, setCopied] = useState(false)
 
-  const citation = `@article{srivastava2025llmthinkbench,
-  title = {LLMThinkBench: Towards Basic Math Reasoning and Overthinking in Large Language Models},
-  author = {Gaurav Srivastava and Aafiya Hussain and Sriram Srinivasan and Xuan Wang},
-  year = {2025},
-  eprint = {2507.04023},
-  archivePrefix = {arXiv},
-  primaryClass = {cs.CL},
-  url = {https://arxiv.org/abs/2507.04023}
+  const citation = `@inproceedings{srivastava2026llmthinkbench,
+  title     = {Do LLMs Overthink Basic Math Reasoning? Benchmarking the Accuracy-Efficiency Tradeoff in Language Models},
+  author    = {Gaurav Srivastava and Aafiya Hussain and Sriram Srinivasan and Xuan Wang},
+  booktitle = {Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (ACL)},
+  year      = {2026},
+  url       = {https://arxiv.org/abs/2507.04023}
 }`
 
   const handleCopy = () => {

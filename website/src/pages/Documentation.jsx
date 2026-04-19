@@ -212,7 +212,7 @@ function OverviewContent({ isDark, cardCls, headCls, textCls }) {
       </div>
       <div className={cardCls}>
         <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
-          Source code on <a href="https://github.com/ctrl-gaurav/LLMThinkBench" target="_blank" rel="noopener noreferrer" className={`${isDark ? 'text-bb-accent' : 'text-bb-accent-dark'} hover:underline`}>GitHub</a>. Package on <a href="https://pypi.org/project/llmthinkbench/" target="_blank" rel="noopener noreferrer" className={`${isDark ? 'text-bb-accent' : 'text-bb-accent-dark'} hover:underline`}>PyPI</a>.
+          Accepted at <strong className={isDark ? 'text-bb-accent' : 'text-bb-accent-dark'}>ACL 2026</strong>. Source on <a href="https://github.com/ctrl-gaurav/LLMThinkBench" target="_blank" rel="noopener noreferrer" className={`${isDark ? 'text-bb-accent' : 'text-bb-accent-dark'} hover:underline`}>GitHub</a>. Package on <a href="https://pypi.org/project/llmthinkbench/" target="_blank" rel="noopener noreferrer" className={`${isDark ? 'text-bb-accent' : 'text-bb-accent-dark'} hover:underline`}>PyPI</a>. Paper: <a href="https://arxiv.org/abs/2507.04023" target="_blank" rel="noopener noreferrer" className={`${isDark ? 'text-bb-accent' : 'text-bb-accent-dark'} hover:underline`}>arXiv:2507.04023</a>.
         </p>
       </div>
     </div>
@@ -597,12 +597,13 @@ function CitationContent({ isDark, cardCls, headCls, textCls }) {
     <div className="space-y-6">
       <div className={cardCls}>
         <h2 className={headCls}>Citation</h2>
-        <p className={textCls}>If LLMThinkBench supports your research, please cite it:</p>
-        <CodeBlock language="bibtex" code={`@software{llmthinkbench,
-  title  = {LLMThinkBench: Evaluating Basic Math Reasoning and Overthinking in Language Models},
-  author = {Srivastava, Gaurav},
-  year   = {2025},
-  url    = {https://github.com/ctrl-gaurav/LLMThinkBench},
+        <p className={textCls}>Accepted at <strong className={isDark ? 'text-bb-accent' : 'text-bb-accent-dark'}>ACL 2026</strong>. If LLMThinkBench supports your research, please cite:</p>
+        <CodeBlock language="bibtex" code={`@inproceedings{srivastava2026llmthinkbench,
+  title     = {Do LLMs Overthink Basic Math Reasoning? Benchmarking the Accuracy-Efficiency Tradeoff in Language Models},
+  author    = {Gaurav Srivastava and Aafiya Hussain and Sriram Srinivasan and Xuan Wang},
+  booktitle = {Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (ACL)},
+  year      = {2026},
+  url       = {https://arxiv.org/abs/2507.04023}
 }`} />
       </div>
     </div>

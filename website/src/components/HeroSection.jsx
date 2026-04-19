@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { Github, Package, FileText, Sparkles, Zap, Target, Copy, Check, Terminal } from 'lucide-react'
+import { Github, Package, FileText, Sparkles, Zap, Target, Copy, Check, Terminal, Award } from 'lucide-react'
 import AnimatedCounter from './AnimatedCounter'
 import { usePyPIVersion } from '../hooks/usePyPIVersion'
 
@@ -62,8 +62,23 @@ export default function HeroSection({ rankedData }) {
       <div className="max-w-5xl mx-auto text-center relative z-10">
         {/* Main title */}
         <div className="mb-8 reveal">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-neon-indigo/20 bg-neon-indigo/5 mb-8 backdrop-blur-sm">
+          {/* ACL 2026 acceptance badge */}
+          <a
+            href="https://www.arxiv.org/abs/2507.04023"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-2.5 px-5 py-2 rounded-full border border-neon-pink/30 bg-gradient-to-r from-neon-pink/10 via-neon-purple/10 to-neon-indigo/10 mb-5 backdrop-blur-sm hover:border-neon-pink/50 transition-all duration-500 hover:shadow-[0_0_30px_rgba(240,147,251,0.2)]"
+          >
+            <Award size={14} className="text-neon-pink animate-pulse" />
+            <span className="text-xs font-semibold tracking-[0.2em] uppercase">
+              <span className="text-neon-pink">Accepted</span>
+              <span className="text-zinc-500 mx-2">·</span>
+              <span className="text-neon-indigo">ACL 2026</span>
+            </span>
+          </a>
+
+          {/* Framework badge */}
+          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-neon-indigo/20 bg-neon-indigo/5 mb-8 ml-2 backdrop-blur-sm">
             <Sparkles size={14} className="text-neon-indigo animate-pulse" />
             <span className="text-xs font-semibold text-neon-indigo tracking-[0.2em] uppercase">
               AI Benchmark Framework

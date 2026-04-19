@@ -51,10 +51,16 @@ export default function Navbar({ scrollToSection }) {
     >
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex justify-between items-center">
-          {/* Logo */}
-          <div
-            className="flex items-center gap-3 cursor-pointer group"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          {/* Logo - always navigates to landing */}
+          <a
+            href="#/"
+            className="flex items-center gap-3 cursor-pointer group no-underline"
+            onClick={() => {
+              // If already on home, also scroll to top
+              if (window.location.hash === '' || window.location.hash === '#/' || window.location.hash === '#') {
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+              }
+            }}
           >
             <div className="relative">
               <Brain className="w-8 h-8 text-neon-indigo group-hover:text-neon-purple transition-colors duration-500" />
@@ -65,7 +71,7 @@ export default function Navbar({ scrollToSection }) {
             <h1 className="text-xl font-bold gradient-text tracking-wider">
               LLMThinkBench
             </h1>
-          </div>
+          </a>
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-8">

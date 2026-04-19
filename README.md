@@ -10,12 +10,15 @@
 [![vLLM](https://img.shields.io/badge/Powered%20by-vLLM-orange)](https://github.com/vllm-project/vllm)
 [![HuggingFace](https://img.shields.io/badge/HuggingFace-Compatible-yellow)](https://huggingface.co/)
 [![Leaderboard](https://img.shields.io/badge/🏆-Live%20Leaderboard-gold)](https://ctrl-gaurav.github.io/LLMThinkBench/)
+[![ACL 2026](https://img.shields.io/badge/ACL-2026-b31b1b)](https://2026.aclweb.org/)
 
 ![LLMThinkBench Banner](https://img.shields.io/badge/🧠%20LLMThinkBench-Advanced%20Reasoning%20%26%20Overthinking%20Detection-blueviolet?style=for-the-badge&logo=brain&logoColor=white)
 
 </div>
 
 ## A Framework for Evaluating Basic Math Reasoning Capabilities and Overthinking of Language Models
+
+> 📣 **Accepted at ACL 2026** — *Do LLMs Overthink Basic Math Reasoning? Benchmarking the Accuracy-Efficiency Tradeoff in Language Models*, to appear in the Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics.
 
 LLMThinkBench is a comprehensive framework designed to rigorously evaluate the basic math reasoning capabilities of Language Models, while also identifying instances of overthinking—where models apply unnecessarily complex logic to simple problems. Through standardized and reproducible benchmarks, it offers valuable insights into how well models perform on various reasoning tasks, from basic arithmetic to complex logical operations.
 
@@ -471,14 +474,12 @@ LLMThinkBench is licensed under the MIT License - see the [LICENSE](LICENSE) fil
 If you use LLMThinkBench in your research, please cite:
 
 ```bibtex
-@article{srivastava2025llmthinkbench,
-    title = {LLMThinkBench: Towards Basic Math Reasoning and Overthinking in Large Language Models},
-    author = {Gaurav Srivastava and Aafiya Hussain and Sriram Srinivasan and Xuan Wang},
-    year = {2025},
-    eprint = {2507.04023},
-    archivePrefix = {arXiv},
-    primaryClass = {cs.CL},
-    url = {https://arxiv.org/abs/2507.04023}
+@inproceedings{srivastava2026llmthinkbench,
+    title     = {Do {LLM}s Overthink Basic Math Reasoning? Benchmarking the Accuracy-Efficiency Tradeoff in Language Models},
+    author    = {Gaurav Srivastava and Aafiya Hussain and Sriram Srinivasan and Xuan Wang},
+    booktitle = {Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (ACL)},
+    year      = {2026},
+    url       = {https://arxiv.org/abs/2507.04023}
 }
 ```
 
