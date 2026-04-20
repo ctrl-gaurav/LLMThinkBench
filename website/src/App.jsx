@@ -174,7 +174,7 @@ function HomePage() {
 
   const exportData = useCallback(() => {
     const csvData = [
-      ['Rank', 'Model', 'Parameters', 'Quantization', 'Accuracy', 'Efficiency', 'Instruction Following', 'Overthinking', 'Tokens', 'Words', 'Characters'],
+      ['Rank', 'Model', 'Parameters', 'Quantization', 'Accuracy', 'O-Score', 'Instruction Following', 'Verbose Ratio', 'Tokens', 'Words', 'Characters'],
       ...processedData.map((m) => [
         m.rank, m.model, m.params, m.quantization, m.accuracy, m.efficiency, m.instruction,
         m.overthinking, m.tokens, m.words, m.chars,

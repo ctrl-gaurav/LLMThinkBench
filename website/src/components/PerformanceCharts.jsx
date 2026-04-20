@@ -41,7 +41,7 @@ const ScatterTooltip = ({ active, payload }) => {
     <div className="recharts-custom-tooltip">
       <p className="text-sm font-bold text-white mb-1.5">{data.name}</p>
       <p className="text-xs text-neon-indigo font-mono">Accuracy: {data.x?.toFixed(2)}%</p>
-      <p className="text-xs text-neon-pink font-mono">Efficiency: {(data.y / 100)?.toFixed(3)}</p>
+      <p className="text-xs text-neon-pink font-mono">O-Score: {(data.y / 100)?.toFixed(3)}</p>
     </div>
   )
 }
@@ -53,9 +53,9 @@ const BubbleTooltip = ({ active, payload }) => {
   return (
     <div className="recharts-custom-tooltip">
       <p className="text-sm font-bold text-white mb-1.5">{data.name}</p>
-      <p className="text-xs text-red-400 font-mono">Overthinking: {data.overthinking?.toFixed(1)}</p>
+      <p className="text-xs text-red-400 font-mono">Verbose Ratio: {data.overthinking?.toFixed(1)}</p>
       <p className="text-xs text-neon-indigo font-mono">Accuracy: {data.y?.toFixed(2)}%</p>
-      <p className="text-xs text-neon-cyan font-mono">Efficiency: {data.efficiency?.toFixed(3)}</p>
+      <p className="text-xs text-neon-cyan font-mono">O-Score: {data.efficiency?.toFixed(3)}</p>
     </div>
   )
 }
@@ -117,7 +117,7 @@ const PerformanceCharts = memo(function PerformanceCharts({ rankedData }) {
       GPT: rankedData.filter((m) => m.model.includes('GPT')),
     }
 
-    const metrics = ['Accuracy', 'Efficiency', 'Instruction', 'Token Eff.', 'Low Tokens']
+    const metrics = ['Accuracy', 'O-Score', 'Instruction', 'Token Eff.', 'Low Tokens']
     return metrics.map((metric, i) => {
       const row = { metric }
       Object.entries(families).forEach(([family, models]) => {
@@ -190,8 +190,8 @@ const PerformanceCharts = memo(function PerformanceCharts({ rankedData }) {
       </h2>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
-        {/* 1. Accuracy vs Efficiency */}
-        <ChartCard title="Accuracy vs Efficiency Trade-off">
+        {/* 1. Accuracy vs O-Score */}
+        <ChartCard title="Accuracy vs O-Score Trade-off">
           <ResponsiveContainer width="100%" height="100%">
             <ScatterChart margin={{ top: 10, right: 20, bottom: 20, left: 10 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
@@ -207,10 +207,10 @@ const PerformanceCharts = memo(function PerformanceCharts({ rankedData }) {
               <YAxis
                 dataKey="y"
                 type="number"
-                name="Efficiency"
+                name="O-Score"
                 tick={{ fill: '#71717a', fontSize: 11 }}
                 axisLine={{ stroke: 'rgba(255,255,255,0.06)' }}
-                label={{ value: 'Efficiency (%)', angle: -90, position: 'insideLeft', offset: 0, fill: '#52525b', fontSize: 11 }}
+                label={{ value: 'O-Score (%)', angle: -90, position: 'insideLeft', offset: 0, fill: '#52525b', fontSize: 11 }}
               />
               <Tooltip content={<ScatterTooltip />} />
               <Scatter data={scatterData} fill={COLORS.indigo} fillOpacity={0.7} stroke={COLORS.indigo} strokeWidth={1} />
@@ -281,8 +281,8 @@ const PerformanceCharts = memo(function PerformanceCharts({ rankedData }) {
           </ResponsiveContainer>
         </ChartCard>
 
-        {/* 4. Token Efficiency Radar by Family */}
-        <ChartCard title="Token Efficiency by Model Family">
+        {/* 4. O-Score Radar by Family */}
+        <ChartCard title="O-Score by Model Family">
           <ResponsiveContainer width="100%" height="100%">
             <RadarChart data={radarData} margin={{ top: 10, right: 30, bottom: 10, left: 30 }}>
               <PolarGrid stroke="rgba(255,255,255,0.06)" />
@@ -363,7 +363,7 @@ const PerformanceCharts = memo(function PerformanceCharts({ rankedData }) {
                   return item?.fullName || label
                 }}
                 formatter={(value, name) => {
-                  if (name === 'Efficiency Score') return [(value / 100).toFixed(3), name]
+                  if (name === 'O-Score') return [(value / 100).toFixed(3), name]
                   return [`${value.toFixed(2)}%`, name]
                 }}
               />
@@ -401,7 +401,7 @@ const PerformanceCharts = memo(function PerformanceCharts({ rankedData }) {
               <Area
                 type="monotone"
                 dataKey="efficiency"
-                name="Efficiency Score"
+                name="O-Score"
                 stroke={COLORS.pink}
                 fill="url(#gradientEfficiency)"
                 strokeWidth={2}

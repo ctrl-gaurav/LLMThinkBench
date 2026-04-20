@@ -24,7 +24,7 @@ export default function CategoryWinners({ rankedData }) {
       isGold: true,
     },
     {
-      title: 'Highest Efficiency Score',
+      title: 'Highest O-Score',
       model: winners.bestEfficiency,
       metric: winners.bestEfficiency.efficiency.toFixed(3),
       icon: Shield,

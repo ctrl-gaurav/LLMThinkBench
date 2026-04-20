@@ -175,7 +175,7 @@ export default function HeroSection({ rankedData }) {
             { icon: Target, color: 'neon-indigo', value: stats.count, suffix: '+', decimals: 0, label: 'Models Tested', iconBg: 'bg-neon-indigo/10', iconHover: 'group-hover:bg-neon-indigo/20' },
             { icon: Zap, color: 'emerald', value: stats.maxAcc, suffix: '%', decimals: 1, label: 'Best Accuracy', iconBg: 'bg-emerald-500/10', iconHover: 'group-hover:bg-emerald-500/20', iconColor: 'text-emerald-400' },
             { icon: Sparkles, color: 'neon-pink', value: stats.minAcc, suffix: '%', decimals: 1, label: 'Min Accuracy', iconBg: 'bg-neon-pink/10', iconHover: 'group-hover:bg-neon-pink/20' },
-            { icon: Zap, color: 'neon-cyan', value: stats.avgEff, suffix: '', decimals: 3, label: 'Avg Efficiency', iconBg: 'bg-neon-cyan/10', iconHover: 'group-hover:bg-neon-cyan/20' },
+            { icon: Zap, color: 'neon-cyan', value: stats.avgEff, suffix: '', decimals: 3, label: 'Avg O-Score', iconBg: 'bg-neon-cyan/10', iconHover: 'group-hover:bg-neon-cyan/20' },
           ].map((stat, i) => {
             const Icon = stat.icon
             return (

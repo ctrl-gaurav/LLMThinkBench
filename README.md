@@ -31,11 +31,11 @@ LLMThinkBench is a comprehensive framework designed to rigorously evaluate the b
 [![LLMThinkBench Leaderboard](https://img.shields.io/badge/📊%20Live%20Leaderboard-Real--time%20Rankings%20•%20Overthinking%20Metrics%20•%20Performance%20Analysis-000428?style=for-the-badge)](https://ctrl-gaurav.github.io/LLMThinkBench/)
 
 **🥇 Top Performers:**
-| Rank | Model | Accuracy | Efficiency | Instruction Following |
-|------|-------|----------|------------|-----------------------|
-| 🥇 #1 | GPT-4.1-mini | 90.23% | 0.768 | 98.14% |
-| 🥈 #2 | GPT-4.1 | 89.88% | 0.752 | 97.79% |
-| 🥉 #3 | GPT-4o | 87.56% | 0.737 | 99.42% |
+| Rank | Model | Accuracy | Overthinking Score | Instruction Following |
+|------|-------|----------|--------------------|-----------------------|
+| 🥇 #1 | GPT-4.1-mini | 90.23% | 0.930 | 98.14% |
+| 🥈 #2 | GPT-4.1 | 89.88% | 0.927 | 97.79% |
+| 🥉 #3 | GPT-4o | 87.56% | 0.918 | 99.42% |
 
 *See how top models like **GPT-4.1**, **Phi-4**, **Qwen**, and **Llama** compare on reasoning efficiency*
 

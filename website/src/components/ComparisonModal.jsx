@@ -18,7 +18,7 @@ export default function ComparisonModal({ rankedData, selectedModels, detailMode
 
   const radarData = useMemo(() => {
     if (compareData.length === 0) return []
-    const metrics = ['Accuracy', 'Efficiency', 'Instruction Following', 'Low Overthinking', 'Token Efficiency']
+    const metrics = ['Accuracy', 'O-Score', 'Instruction Following', 'Low Overthinking', 'Token Efficiency']
     return metrics.map((metric, i) => {
       const row = { metric }
       compareData.forEach((model) => {
@@ -107,7 +107,7 @@ export default function ComparisonModal({ rankedData, selectedModels, detailMode
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
                 {[
                   { label: 'Accuracy', value: `${detailModel.accuracy.toFixed(2)}%`, metric: 'accuracy', val: detailModel.accuracy, gradient: 'from-neon-indigo/10 to-neon-purple/5', border: 'border-neon-indigo/10' },
-                  { label: 'Efficiency', value: detailModel.efficiency.toFixed(3), metric: 'efficiency', val: detailModel.efficiency * 100, gradient: 'from-neon-pink/10 to-neon-magenta/5', border: 'border-neon-pink/10' },
+                  { label: 'O-Score', value: detailModel.efficiency.toFixed(3), metric: 'efficiency', val: detailModel.efficiency * 100, gradient: 'from-neon-pink/10 to-neon-magenta/5', border: 'border-neon-pink/10' },
                   { label: 'Instruction Following', value: `${detailModel.instruction.toFixed(2)}%`, metric: 'instruction', val: detailModel.instruction, gradient: 'from-emerald-500/10 to-emerald-600/5', border: 'border-emerald-500/10' },
                 ].map((item) => (
                   <div key={item.label} className={`bg-gradient-to-br ${item.gradient} rounded-2xl p-6 text-center border ${item.border} backdrop-blur-sm`}>
@@ -122,7 +122,7 @@ export default function ComparisonModal({ rankedData, selectedModels, detailMode
               {/* Secondary metrics */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10">
                 {[
-                  { label: 'Overthinking Ratio', value: detailModel.overthinking.toFixed(1), metric: 'overthinking', val: detailModel.overthinking },
+                  { label: 'Verbose Ratio', value: detailModel.overthinking.toFixed(1), metric: 'overthinking', val: detailModel.overthinking },
                   { label: 'Avg Tokens', value: detailModel.tokens.toFixed(1), metric: 'tokens', val: detailModel.tokens },
                   { label: 'Avg Words', value: detailModel.words.toFixed(1), metric: 'words', val: detailModel.words },
                   { label: 'Avg Characters', value: detailModel.chars.toFixed(1), metric: 'chars', val: detailModel.chars },
@@ -171,9 +171,9 @@ export default function ComparisonModal({ rankedData, selectedModels, detailMode
                       { label: 'Rank', render: (m) => `#${m.rank}` },
                       { label: 'Parameters', render: (m) => m.params },
                       { label: 'Accuracy', render: (m) => `${m.accuracy.toFixed(2)}%`, metric: 'accuracy', val: (m) => m.accuracy },
-                      { label: 'Efficiency', render: (m) => m.efficiency.toFixed(3), metric: 'efficiency', val: (m) => m.efficiency * 100 },
+                      { label: 'O-Score', render: (m) => m.efficiency.toFixed(3), metric: 'efficiency', val: (m) => m.efficiency * 100 },
                       { label: 'Instruction Following', render: (m) => `${m.instruction.toFixed(2)}%`, metric: 'instruction', val: (m) => m.instruction },
-                      { label: 'Overthinking', render: (m) => m.overthinking.toFixed(1), metric: 'overthinking', val: (m) => m.overthinking },
+                      { label: 'Verbose Ratio', render: (m) => m.overthinking.toFixed(1), metric: 'overthinking', val: (m) => m.overthinking },
                       { label: 'Avg Tokens', render: (m) => m.tokens.toFixed(1), metric: 'tokens', val: (m) => m.tokens },
                     ].map((row, rowIdx) => (
                       <tr key={row.label} className={`border-b border-white/[0.03] ${rowIdx % 2 === 0 ? 'bg-white/[0.01]' : ''}`}>

@@ -134,11 +134,11 @@ export default function AdvancedFilters({ filters, setFilters, resetFilters }) {
               </select>
             </div>
 
-            {/* Efficiency Threshold */}
+            {/* O-Score Threshold */}
             <div className="space-y-3">
               <label className="text-[10px] font-bold text-neon-indigo uppercase tracking-[0.2em] flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-neon-cyan animate-pulse" style={{ animationDelay: '1.5s' }} />
-                Min Efficiency
+                Min O-Score
               </label>
               <input
                 type="range"

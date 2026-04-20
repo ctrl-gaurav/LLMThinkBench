@@ -19,9 +19,9 @@ const LeaderboardTable = memo(function LeaderboardTable({
     { key: 'model', label: 'Model' },
     { key: 'params', label: 'Params' },
     { key: 'accuracy', label: 'Accuracy' },
-    { key: 'efficiency', label: 'Efficiency' },
+    { key: 'efficiency', label: 'O-Score' },
     { key: 'instruction', label: 'Instr. Following' },
-    { key: 'overthinking', label: 'Overthinking' },
+    { key: 'overthinking', label: 'Verbose Ratio' },
     { key: 'tokens', label: 'Avg Tokens' },
     { key: 'words', label: 'Avg Words' },
     { key: 'chars', label: 'Avg Chars' },
@@ -89,9 +89,9 @@ const LeaderboardTable = memo(function LeaderboardTable({
         >
           <option value="rank">Sort by Rank</option>
           <option value="accuracy">Sort by Accuracy</option>
-          <option value="efficiency">Sort by Efficiency</option>
+          <option value="efficiency">Sort by O-Score</option>
           <option value="instruction">Sort by Instruction Following</option>
-          <option value="overthinking">Sort by Overthinking Ratio</option>
+          <option value="overthinking">Sort by Verbose Ratio</option>
           <option value="tokens">Sort by Tokens</option>
           <option value="words">Sort by Words</option>
           <option value="chars">Sort by Chars</option>
